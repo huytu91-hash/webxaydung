@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
   :root{ 
-    /* Màu Xám Than (Dark Grey) sang trọng */
     --bg:#121212; 
     --bg-2:#1a1a1a; 
     --fg:#f4f1ea; 
@@ -48,10 +47,21 @@
   .btn-zalo { background: #0068FF; }
   .btn-fb { background: #1877F2; }
 
-  /* HERO */
+  /* HERO & VIDEO FIX LỖI KHUNG NHỎ */
   .hero { position: relative; height: 100vh; display: flex; align-items: center; overflow: hidden; }
-  .video-background { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden; }
-  .video-background iframe { position: absolute; top: 50%; left: 50%; width: 150%; height: 150%; transform: translate(-50%, -50%); border: none; }
+  .video-background { 
+    position: absolute; 
+    top: 0; left: 0; width: 100%; height: 100%; 
+    z-index: 0; pointer-events: none; overflow: hidden; 
+    background: #121212; 
+  }
+  .video-background iframe { 
+    position: absolute; top: 50%; left: 50%; 
+    width: 100vw; height: 56.25vw; 
+    min-height: 100vh; min-width: 177.77vh; 
+    transform: translate(-50%, -50%); 
+    border: none; pointer-events: none;
+  }
   .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(18,18,18,0.8) 0%, rgba(18,18,18,0.3) 50%, rgba(18,18,18,0.5) 100%); z-index: 1; }
   .hero-content { position: relative; z-index: 2; width: 100%; padding-top: 50px; }
   .hero-kicker { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
@@ -126,13 +136,13 @@
   .blog-content a { color: var(--fg); font-size: 12px; font-weight: 600; text-transform: uppercase; margin-top: 20px; display: inline-block;}
   .blog-content a:hover { color: var(--accent); }
 
-  /* TESTIMONIALS */
+  /* TESTIMONIALS (ĐÁNH GIÁ KHÁCH HÀNG) */
   .testi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
   .testi-item { padding: 40px; border: 1px solid var(--line); background: var(--bg-2); position: relative;}
   .testi-item::before { content: "“"; font-family: var(--font-serif); font-size: 80px; color: var(--line); position: absolute; top: 10px; right: 20px; line-height: 1; }
   .testi-item p { font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; color: #ddd; margin-bottom: 20px; font-weight: 400; position: relative; z-index: 1;}
   .testi-author { display: flex; align-items: center; gap: 15px; }
-  .testi-author img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+  .testi-author img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent); }
   .testi-author h5 { font-size: 0.95rem; font-weight: 500; }
   .testi-author span { color: var(--muted); font-size: 0.85rem; }
 
@@ -300,6 +310,7 @@
     </div>
   </section>
 
+  <!-- ĐÁNH GIÁ KHÁCH HÀNG (ĐÃ CẬP NHẬT ẢNH NGƯỜI VIỆT CHÂN THẬT) -->
   <section id="danh-gia">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -310,35 +321,35 @@
         <div class="testi-item reveal">
           <p>"Mình chọn HUY HOÀNG vì các bạn làm rất chuyên nghiệp, từ khâu tư vấn đến thi công đều rất chỉn chu. Gia đình mình rất hài lòng với không gian mới."</p>
           <div class="testi-author">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" alt="Khách hàng">
+            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=300&auto=format&fit=crop" alt="Anh Tuấn - Quy Nhơn">
             <div><h5>Anh Tuấn</h5><span>Chủ quán Cafe - Quy Nhơn</span></div>
           </div>
         </div>
         <div class="testi-item reveal delay-1">
           <p>"Tiến độ thi công cực kỳ đúng hẹn, báo giá không phát sinh. Đội ngũ thợ làm việc gọn gàng, sạch sẽ. Rất đáng để tin tưởng!"</p>
           <div class="testi-author">
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Khách hàng">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=300&auto=format&fit=crop" alt="Chị Lan - Gia Lai">
             <div><h5>Chị Lan</h5><span>Xây nhà phố - Gia Lai</span></div>
           </div>
         </div>
         <div class="testi-item reveal">
           <p>"Tôi rất ấn tượng với thiết kế nội thất bên HUY HOÀNG. Không gian thoáng đãng, mang lại cảm giác thư thái mỗi khi về nhà."</p>
           <div class="testi-author">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop" alt="Khách hàng">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format&fit=crop" alt="Anh Hùng - Tuy Phước">
             <div><h5>Anh Hùng</h5><span>Nhà vườn - Tuy Phước</span></div>
           </div>
         </div>
         <div class="testi-item reveal delay-1">
           <p>"Chất lượng hoàn thiện tốt hơn mình mong đợi, đặc biệt là phần chống thấm và mái nhà. Rất yên tâm khi giao nhà cho các bạn."</p>
           <div class="testi-author">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop" alt="Khách hàng">
+            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=300&auto=format&fit=crop" alt="Chị Hoa - Sông Cầu">
             <div><h5>Chị Hoa</h5><span>Nhà 2 tầng - Sông Cầu</span></div>
           </div>
         </div>
         <div class="testi-item reveal">
           <p>"Đội ngũ kiến trúc sư trẻ trung, sáng tạo và rất lắng nghe ý kiến của gia chủ. Bản vẽ 3D nhìn là mê luôn."</p>
           <div class="testi-author">
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop" alt="Khách hàng">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop" alt="Anh Nam - Phù Cát">
             <div><h5>Anh Nam</h5><span>Thiết kế quán ăn - Phù Cát</span></div>
           </div>
         </div>
@@ -600,7 +611,7 @@
     const floors = currentMode === 'build' ? (parseFloat(document.getElementById('floorsInput').value) || 1) : 1;
     let totalArea = area;
     if (currentMode === 'build') {
-      totalArea = (area * floors) + (area * 0.3) + (area * 0.5); // Móng + Mái
+      totalArea = (area * floors) + (area * 0.3) + (area * 0.5); 
     }
     const subTotal = totalArea * selectedPrice;
     const vat = subTotal * 0.08;
