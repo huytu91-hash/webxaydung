@@ -40,17 +40,10 @@
   .delay-1 { transition-delay: 0.1s; }
   .delay-2 { transition-delay: 0.2s; }
 
-  /* HEADER & LOGO */
+  /* HEADER & LOGO SVG CHUẨN TỰ ĐỘNG KHÔNG LỖI */
   header{ position:fixed; top:0; left:0; width:100%; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:15px 40px; background:rgba(18,18,18,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); transition:all 0.3s; }
   .brand-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-  
-  .brand-logo img { 
-    height: 40px; 
-    width: auto; 
-    object-fit: contain; 
-    mix-blend-mode: screen; 
-    filter: brightness(1.2) contrast(1.2); 
-  }
+  .brand-logo svg { height: 38px; width: auto; fill: none; }
   .brand-text { font-family: var(--font-serif); font-size: 20px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #fff; }
   .brand-text span { color: var(--accent); font-weight: 300; }
   
@@ -187,9 +180,7 @@
   /* FOOTER */
   footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
-  /* ========================================== */
-  /* OPTIMIZATION CHO ĐIỆN THOẠI (MOBILE RESPONSIVE) */
-  /* ========================================== */
+  /* MOBILE RESPONSIVE */
   @media(max-width: 992px) {
     header { padding: 15px 20px; }
     .brand-text { font-size: 16px; }
@@ -236,7 +227,11 @@
 
 <header>
   <div class="brand-logo" onclick="showPage('home')">
-    <img src="Building Company Logo.png" alt="HUY HOÀNG LOGO">
+    <svg viewBox="0 0 120 120">
+      <path d="M 20,95 L 45,35 L 70,95 Z" fill="#2575fc"/>
+      <path d="M 45,95 L 70,20 L 95,95 Z" fill="#1b4f9c"/>
+      <path d="M 10,95 L 100,95" stroke="#64b5f6" stroke-width="6" stroke-linecap="round"/>
+    </svg>
     <div class="brand-text">HUY <span>HOÀNG</span></div>
   </div>
   <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
@@ -255,9 +250,7 @@
   </div>
 </div>
 
-<!-- ========================================== -->
 <!-- PAGE 1: TRANG CHỦ -->
-<!-- ========================================== -->
 <div id="page-home" class="page active">
   <section class="hero" style="border-bottom: none;">
     <div class="video-background">
@@ -362,7 +355,7 @@
     </div>
   </section>
 
-  <!-- ĐÁNH GIÁ KHÁCH HÀNG (ẢNH NGƯỜI VIỆT THẬT CHÂN THỰC) -->
+  <!-- ĐÁNH GIÁ KHÁCH HÀNG -->
   <section id="danh-gia">
     <div class="wrap">
       <div class="sec-head reveal">
@@ -478,9 +471,7 @@
   </section>
 </div>
 
-<!-- ========================================== -->
 <!-- PAGE 2: BÁO GIÁ -->
-<!-- ========================================== -->
 <div id="page-pricing" class="page" style="padding-top: 130px; min-height: 100vh;">
   <div class="wrap" style="max-width: 900px;">
     <div class="sec-head" style="text-align: center; max-width: 100%;">
@@ -525,9 +516,7 @@
   </div>
 </div>
 
-<!-- ========================================== -->
 <!-- PAGE 3: ADMIN -->
-<!-- ========================================== -->
 <div id="page-admin" class="page" style="padding-top: 130px; min-height: 100vh;">
   <div class="wrap" style="max-width: 900px;">
     
@@ -579,7 +568,6 @@
   </div>
 </footer>
 
-<!-- LOGIC JAVASCRIPT (FIREBASE, EMAILJS, SPA, CALCULATOR) -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -597,13 +585,11 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  /* MENU DI ĐỘNG */
   window.toggleMobileMenu = function() {
     const nav = document.getElementById('navLinks');
     if(nav) nav.classList.toggle('mobile-open');
   }
 
-  /* CHUYỂN TRANG (SPA) */
   window.showPage = function(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById('page-' + pageId);
@@ -615,7 +601,6 @@
     if(nav) nav.classList.remove('mobile-open');
   }
 
-  /* XỬ LÝ FORM LIÊN HỆ */
   const contactForm = document.getElementById('contactForm');
   if(contactForm) {
     contactForm.addEventListener('submit', async (e) => {
@@ -654,7 +639,6 @@
     });
   }
 
-  /* LOGIC BÁO GIÁ */
   let currentMode = 'design';
   let selectedPrice = 79000;
 
@@ -698,7 +682,6 @@
     calcNextStep(3);
   }
 
-  /* LOGIC ADMIN */
   window.checkLogin = function() {
     if (document.getElementById('admin-pass').value === "huyhoang123") {
       document.getElementById('login-screen').style.display = 'none';
@@ -795,7 +778,6 @@
     if(btn) btn.classList.add('active');
   }
 
-  /* HIỆU ỨNG CUỘN */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
