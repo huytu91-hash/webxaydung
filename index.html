@@ -4,111 +4,179 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HUY HOÀNG – Xây Dựng Quy Nhơn</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  :root{ --bg:#0a0a0a; --bg-2:#121212; --fg:#f5f5f5; --muted:#888; --line:#222; --accent:#c9a227; }
+  :root{ 
+    --bg:#080808; --bg-2:#111; --fg:#f4f1ea; --muted:#999; --line:#222; --accent:#c9a227; 
+    --font-main: 'Inter', sans-serif;
+    --font-serif: 'Cormorant Garamond', serif;
+  }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{ background:var(--bg); color:var(--fg); font-family:'Inter', sans-serif; line-height:1.6; overflow-x:hidden; }
+  body{ background:var(--bg); color:var(--fg); font-family:var(--font-main); line-height:1.8; overflow-x:hidden; -webkit-font-smoothing:antialiased;}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:1300px;margin:0 auto;padding:0 32px}
+  .wrap{max-width:1300px;margin:0 auto;padding:0 40px}
   
   /* HEADER */
-  header{ position:fixed; top:0; left:0; width:100%; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:15px 40px; background:rgba(10,10,10,0.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
-  .brand-text { font-size: 20px; font-weight: 800; letter-spacing: 0.1em; color: var(--fg); }
-  .brand-text span { color: var(--accent); }
-  .nav-links { display: flex; gap: 32px; }
-  .nav-links a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.3s; font-weight: 600;}
+  header{ position:fixed; top:0; left:0; width:100%; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:25px 40px; background:rgba(8,8,8,0.8); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,255,255,0.05); }
+  .brand-text { font-family: var(--font-serif); font-size: 28px; font-weight: 600; letter-spacing: 0.1em; }
+  .brand-text span { color: var(--accent); font-style: italic; }
+  .nav-links { display: flex; gap: 40px; }
+  .nav-links a { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); transition: color 0.3s; font-weight: 500;}
   .nav-links a:hover { color: var(--accent); }
 
-  /* NÚT LIÊN HỆ NỔI & LOGO GÓC DƯỚI */
-  .floating-bottom { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column-reverse; gap: 20px; z-index: 999; align-items: flex-end;}
-  .contact-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;}
-  .contact-group a { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; background: var(--bg-2); border: 1px solid var(--line); box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.3s; }
-  .contact-group a:hover { transform: scale(1.1); border-color: var(--accent); }
-  .contact-group .btn-phone { background: var(--accent); color: #000; }
-  .bottom-logo { width: 120px; opacity: 0.8; mix-blend-mode: screen; filter: sepia(1) saturate(5) hue-rotate(5deg) brightness(1.2); transition: opacity 0.3s;}
-  .bottom-logo:hover { opacity: 1; }
+  /* NÚT LIÊN HỆ NỔI */
+  .floating-bottom { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999; }
+  .contact-group { display: flex; flex-direction: column; gap: 12px;}
+  .contact-group a { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; background: rgba(17,17,17,0.8); border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.3s; }
+  .contact-group a:hover { transform: translateY(-5px); border-color: var(--accent); color: var(--accent); }
+  .contact-group .btn-phone { background: var(--accent); color: #000; border: none; }
 
-  /* HERO */
-  .hero { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; }
-  .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out, transform 6s linear; background-size: cover; background-position: center; transform: scale(1); }
-  .slide.active { opacity: 1; transform: scale(1.05); }
-  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,10,10,0.95) 20%, rgba(10,10,10,0.4)); z-index: 1; }
-  .hero-content { position: relative; z-index: 2; width: 100%; padding-top: 80px; }
-  .hero .kicker { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; display: block; border-left: 3px solid var(--accent); padding-left: 10px;}
-  .hero h1 { font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 800; line-height: 0.95; margin-bottom: 30px; }
-  .hero h1 .gold { color: var(--accent); font-style: italic; font-family: 'Space Mono', monospace; font-weight: 400; }
-  .hero p { max-width: 600px; color: #ccc; font-size: 1.1rem; margin-bottom: 40px; }
-  .btn-primary { display: inline-block; padding: 16px 36px; background: var(--accent); color: #000; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 13px; transition: all 0.3s; }
-  .btn-primary:hover { background: #fff; transform: translateY(-3px); }
+  /* --- HERO VỚI VIDEO NỀN TỰ CHẠY --- */
+  .hero { position: relative; height: 100vh; display: flex; align-items: center; overflow: hidden; }
+  
+  /* Lớp phủ mờ */
+  .hero-overlay { 
+    position: absolute; inset: 0; 
+    background: linear-gradient(to right, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.4) 50%, rgba(8,8,8,0.6) 100%); 
+    z-index: 2; 
+  }
+  
+  /* Khung chứa Video nền */
+  .video-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none; /* Để người dùng không bấm nhầm vào video */
+    overflow: hidden;
+  }
+  
+  .video-background iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    /* Thu phóng video để lấp đầy màn hình, che đi các nút của YouTube */
+    transform: scale(1.3); 
+  }
 
-  .stats-section { background: var(--bg-2); border-bottom: 1px solid var(--line); padding: 60px 0; position: relative; z-index: 10; margin-top: -30px;}
+  .hero-content { position: relative; z-index: 3; width: 100%; padding-top: 50px; }
+  
+  .hero-kicker { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+  .hero-kicker::before { content: ""; width: 40px; height: 1px; background: var(--accent); }
+  .hero-kicker span { font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;}
+  
+  .hero h1 { 
+    font-family: var(--font-serif); 
+    font-size: clamp(2.5rem, 4.5vw, 4rem); 
+    font-weight: 400; 
+    line-height: 1.2; 
+    margin-bottom: 30px; 
+    color: #fff;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .hero h1 span { color: var(--accent); font-style: italic;}
+  .hero p { max-width: 450px; color: #ddd; font-size: 0.95rem; margin-bottom: 40px; font-weight: 300; line-height: 1.8; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+  
+  .hero-btns { display: flex; align-items: center; gap: 30px; }
+  .btn-primary { 
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 15px 30px; background: var(--accent); color: #000; 
+    font-family: var(--font-main); font-size: 11px; font-weight: 600; 
+    text-transform: uppercase; letter-spacing: 0.1em; 
+    border: 1px solid var(--accent); transition: all 0.3s; cursor: pointer;
+  }
+  .btn-primary:hover { background: #fff; border-color: #fff; }
+  
+  .scroll-down { font-size: 11px; color: #ccc; text-transform: uppercase; letter-spacing: 0.15em; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .scroll-down:hover { color: #fff; }
+
+  /* STATS SECTION */
+  .stats-section { background: #0a0a0a; border-bottom: 1px solid var(--line); border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; position: relative; z-index: 10;}
   .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
-  .stat-item h3 { font-size: 3rem; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
-  .stat-item p { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); text-transform: uppercase; }
+  .stat-item { border-right: 1px solid rgba(255,255,255,0.1); }
+  .stat-item:last-child { border-right: none; }
+  .stat-item h3 { font-family: var(--font-serif); font-size: 2.5rem; font-weight: 400; color: var(--accent); margin-bottom: 5px; }
+  .stat-item p { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 500;}
 
   section { padding: 120px 0; border-bottom: 1px solid var(--line); }
-  .sec-head { margin-bottom: 60px; }
-  .sec-head .num { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-bottom: 16px; }
-  .sec-head h2 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; }
-  .sec-head h2 span { color: var(--muted); font-weight: 300; }
+  .sec-head { margin-bottom: 60px; max-width: 800px;}
+  .sec-head .num { font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; display: block; margin-bottom: 15px; font-weight: 500;}
+  .sec-head h2 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; line-height: 1.2; letter-spacing: 0;}
+  .sec-head h2 span { color: var(--muted); font-style: italic; }
 
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .about-img img { width: 100%; border: 1px solid var(--line); padding: 10px; }
-  .about-text p { font-size: 1.1rem; color: #ccc; margin-bottom: 20px; font-weight: 300; }
+  .about-img img { width: 100%; height: auto; object-fit: cover;}
+  .about-text p { font-size: 1rem; color: #ccc; margin-bottom: 20px; font-weight: 300; }
+  .about-text blockquote { border-left: 1px solid var(--accent); padding-left: 20px; font-family: var(--font-serif); font-style: italic; color: var(--accent); font-size: 1.4rem; margin-top: 30px;}
 
-  .project-tabs { display: flex; gap: 30px; margin-bottom: 40px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
-  .tab-btn { background: none; border: none; color: var(--muted); font-size: 1.1rem; font-weight: 600; cursor: pointer; padding: 10px 0; position: relative; text-transform: uppercase; }
-  .tab-btn.active { color: var(--accent); }
-  .tab-btn.active::after { content: ""; position: absolute; bottom: -11px; left: 0; width: 100%; height: 2px; background: var(--accent); }
-  .project-content { display: none; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .project-content.active { display: grid; animation: fadeIn 0.5s; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .project-item { position: relative; height: 300px; overflow: hidden; border: 1px solid var(--line); }
-  .project-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
-  .project-item:hover img { transform: scale(1.1); }
-  .project-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); transform: translateY(20px); opacity: 0; transition: all 0.4s; }
-  .project-item:hover .project-info { transform: translateY(0); opacity: 1; }
-  .project-info h4 { font-size: 1.2rem; font-weight: 600; margin-bottom: 4px; color: #fff;}
-  .project-info p { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); }
+  .project-tabs { display: flex; gap: 30px; margin-bottom: 40px; }
+  .tab-btn { background: none; border: none; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; cursor: pointer; padding-bottom: 10px; position: relative; transition: color 0.3s;}
+  .tab-btn.active { color: var(--fg); }
+  .tab-btn.active::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: var(--accent); }
+  .project-content { display: none; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+  .project-content.active { display: grid; animation: fadeIn 0.6s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px);} to { opacity: 1; transform: translateY(0);} }
+  .project-item { position: relative; height: 350px; overflow: hidden; cursor: pointer;}
+  .project-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s; }
+  .project-item:hover img { transform: scale(1.05); }
+  .project-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); }
+  .project-info h4 { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400; margin-bottom: 5px; }
+  .project-info p { color: var(--accent); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;}
 
-  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-  .gallery-item { height: 250px; overflow: hidden; border: 1px solid var(--line); }
-  .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.5s; }
-  .gallery-item:hover img { filter: grayscale(0%); transform: scale(1.05); }
+  .process-timeline { max-width: 700px; margin: 0 auto; position: relative;}
+  .process-timeline::before { content: ""; position: absolute; top: 0; left: 15px; height: 100%; width: 1px; background: var(--line); }
+  .step { position: relative; padding-left: 60px; margin-bottom: 50px; }
+  .step:last-child { margin-bottom: 0; }
+  .step-num { position: absolute; left: 0; top: 0; width: 30px; height: 30px; background: var(--bg); border: 1px solid var(--accent); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500;}
+  .step h4 { font-family: var(--font-serif); font-size: 1.4rem; font-weight: 400; margin-bottom: 5px; }
+  .step p { color: var(--muted); font-size: 0.95rem; }
 
-  .testimonial-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-  .testi-item { background: var(--bg-2); padding: 40px; border: 1px solid var(--line); display: flex; gap: 20px; }
-  .testi-avatar { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
-  .testi-content { flex: 1; }
-  .testi-stars { color: var(--accent); font-size: 12px; margin-bottom: 10px; }
-  .testi-content p { font-style: italic; color: #ccc; margin-bottom: 15px; font-size: 0.95rem; }
-  .testi-author h5 { font-size: 1rem; color: var(--fg); }
-  .testi-author span { font-size: 0.8rem; color: var(--muted); }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  .why-item { background: var(--bg-2); padding: 40px 30px; border: 1px solid var(--line); transition: border-color 0.3s;}
+  .why-item:hover { border-color: var(--accent); }
+  .why-item i { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
+  .why-item h4 { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 10px; }
+  .why-item p { color: var(--muted); font-size: 0.9rem; }
 
-  .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-  .step-card { background: var(--bg-2); border: 1px solid var(--line); padding: 40px; position: relative; }
-  .step-num { font-family: 'Space Mono', monospace; font-size: 3rem; font-weight: 800; color: #222; position: absolute; top: 20px; right: 30px; }
-  .step-icon { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
-  .step-card h4 { font-size: 1.2rem; margin-bottom: 10px; }
-  .step-card p { color: var(--muted); font-size: 0.95rem; }
+  .testi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+  .testi-item { padding: 40px; border: 1px solid var(--line); position: relative;}
+  .testi-item::before { content: "“"; font-family: var(--font-serif); font-size: 80px; color: var(--line); position: absolute; top: 10px; right: 20px; line-height: 1; }
+  .testi-item p { font-family: var(--font-serif); font-size: 1.3rem; font-style: italic; color: #ddd; margin-bottom: 20px; font-weight: 400; position: relative; z-index: 1;}
+  .testi-author { display: flex; align-items: center; gap: 15px; }
+  .testi-author img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+  .testi-author h5 { font-size: 0.95rem; font-weight: 500; }
+  .testi-author span { color: var(--muted); font-size: 0.85rem; }
 
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-  .contact-form-box { background: var(--bg-2); border: 1px solid var(--line); padding: 40px; }
+  .contact-info .line { padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .contact-info .line span { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.1em;}
+  .contact-info .line div { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 400;}
+  .contact-form { background: var(--bg-2); padding: 40px; border: 1px solid var(--line);}
   .form-group { margin-bottom: 20px; }
-  .form-group label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
-  .form-group input, .form-group textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); color: var(--fg); padding: 15px; outline: none; }
-  .form-group input:focus { border-color: var(--accent); }
-  .submit-btn { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; font-weight: 700; cursor: pointer; }
-  footer { padding: 40px 0; display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--line); }
+  .form-group label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em;}
+  .form-group input, .form-group textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); color: var(--fg); padding: 15px; font-size: 0.95rem; font-family: var(--font-main); outline: none; transition: border 0.3s;}
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+  .submit-btn { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; font-size: 12px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.15em;}
+  
+  footer { padding: 40px 0; display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;}
 
   @media(max-width: 992px) {
-    .stats-grid, .about-grid, .gallery-grid, .testimonial-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-    .project-content.active, .process-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 20px;}
+    .stat-item { border-right: none; }
+    .about-grid, .project-content.active, .why-grid, .testi-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
     .nav-links { display: none; }
-    .bottom-logo { width: 80px; }
+    .hero h1 { font-size: 2.5rem; }
+    section { padding: 80px 0; }
+    .wrap { padding: 0 20px; }
+    .hero-btns { flex-direction: column; align-items: flex-start; gap: 15px;}
   }
 </style>
 </head>
@@ -118,62 +186,84 @@
   <a href="#" class="brand-text">HUY <span>HOÀNG</span></a>
   <div class="nav-links">
     <a href="#ve-chung-toi">Giới thiệu</a>
-    <a href="#du-an">Công trình</a>
-    <a href="#thu-vien">Thư viện</a>
+    <a href="#du-an">Dự án</a>
+    <a href="#quy-trinh">Quy trình</a>
     <a href="#danh-gia">Đánh giá</a>
-    <a href="#lien-he">Liên hệ</a>
-    <a href="admin.html" style="color:var(--accent); font-weight: 800;">QUẢN TRỊ</a>
+    <a href="admin.html" style="color:var(--accent);">QUẢN TRỊ</a>
   </div>
 </header>
 
 <div class="floating-bottom">
   <div class="contact-group">
-    <a href="tel:0944437238" class="btn-phone" title="Gọi ngay"><i class="fas fa-phone-alt"></i></a>
+    <a href="tel:0944437238" class="btn-phone"><i class="fas fa-phone-alt"></i></a>
     <a href="https://zalo.me/0944437238" target="_blank" style="background:#0068FF;"><i class="fas fa-comment-dots"></i></a>
-    <a href="https://www.facebook.com/profile.php?id=61594158232252" target="_blank" style="background:#1877F2;"><i class="fab fa-facebook-f"></i></a>
   </div>
-  <!-- NHỚ DÁN LINK ẢNH LOGO CỦA MÀY VÀO ĐÂY -->
-  <img src="https://i.ibb.co/your-image-link/logo.png" alt="Logo" class="bottom-logo">
 </div>
 
+<!-- HERO VỚI VIDEO YOUTUBE TỰ CHẠY NỀN -->
 <section class="hero" style="border-bottom: none;">
-  <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop');"></div>
-  <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop');"></div>
+  
+  <div class="video-background">
+    <!-- VIDEO TỰ CHẠY NỀN -->
+    <iframe 
+      src="https://www.youtube.com/embed/F7wSFTPPsVc?autoplay=1&mute=1&loop=1&playlist=F7wSFTPPsVc&controls=0&modestbranding=1&rel=0&playsinline=1&showinfo=0" 
+      frameborder="0" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen>
+    </iframe>
+  </div>
+  
   <div class="hero-overlay"></div>
+  
   <div class="wrap hero-content">
-    <span class="kicker">Nhà thầu xây dựng chuyên nghiệp</span>
-    <h1>Kiến tạo<br>không gian<br><span class="gold">có giá trị.</span></h1>
-    <p>Đồng hành cùng bạn từ ý tưởng đầu tiên đến công trình hoàn thiện. Giải pháp thiết kế và thi công tối ưu cho nhà phố, quán cà phê và nhà hàng tại Quy Nhơn.</p>
-    <a href="bao-gia.html" class="btn-primary">Nhận Báo Giá Ngay</a>
+    <div class="hero-kicker">
+      <span>HUY HOÀNG / QUY NHƠN</span>
+    </div>
+    
+    <h1>Không gian sống đẹp<br>nhất là nơi được làm<br><span>riêng cho gia đình bạn</span></h1>
+    
+    <p>Chúng tôi không bắt đầu bằng những bản vẽ khô khan, mà bắt đầu bằng việc lắng nghe cách bạn muốn sống trong không gian đó.</p>
+    
+    <div class="hero-btns">
+      <a href="bao-gia.html" class="btn-primary">TƯ VẤN NGAY <i class="fas fa-arrow-right"></i></a>
+      <a href="#ve-chung-toi" class="scroll-down">CUỘN XUỐNG <i class="fas fa-arrow-down" style="transform: rotate(90deg);"></i></a>
+    </div>
   </div>
 </section>
 
+<!-- STATS SECTION -->
 <div class="stats-section">
   <div class="wrap stats-grid">
-    <div class="stat-item"><h3>5+</h3><p>Năm Kinh Nghiệm</p></div>
-    <div class="stat-item"><h3>100+</h3><p>Công Trình</p></div>
-    <div class="stat-item"><h3>100%</h3><p>Đúng Tiến Độ</p></div>
-    <div class="stat-item"><h3>24/7</h3><p>Hỗ Trợ</p></div>
+    <div class="stat-item"><h3>10</h3><p>Năm Kinh Nghiệm</p></div>
+    <div class="stat-item"><h3>200+</h3><p>Dự Án Bàn Giao</p></div>
+    <div class="stat-item"><h3>50+</h3><p>Dự Án Mỗi Năm</p></div>
+    <div class="stat-item"><h3>1 + 5</h3><p>Năm Bảo Hành, Bảo Trì</p></div>
   </div>
 </div>
 
 <section id="ve-chung-toi">
   <div class="wrap about-grid">
-    <div class="about-img"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop" alt="Đội ngũ HUY HOÀNG"></div>
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop" alt="Đội ngũ HUY HOÀNG">
+    </div>
     <div class="about-text">
       <div class="sec-head" style="margin-bottom: 30px;">
         <span class="num">01 / VỀ CHÚNG TÔI</span>
         <h2>Uy tín tạo nên <span>thương hiệu.</span></h2>
       </div>
-      <p>Chúng tôi không bắt đầu bằng những bản vẽ khô khan, mà bắt đầu bằng việc <strong>lắng nghe</strong> cách bạn muốn sống, muốn kinh doanh trong không gian đó.</p>
-      <p>Với đội ngũ kiến trúc sư, kỹ sư giàu kinh nghiệm, HUY HOÀNG cam kết mang đến những công trình không chỉ đẹp về thẩm mỹ mà còn bền vững theo thời gian, tối ưu công năng và chi phí.</p>
+      <p>Chúng tôi không bắt đầu bằng những bản vẽ khô khan, mà bắt đầu bằng việc lắng nghe cách bạn muốn sống, muốn kinh doanh trong không gian đó.</p>
+      <p>Với đội ngũ kiến trúc sư, kỹ sư giàu kinh nghiệm, HUY HOÀNG cam kết mang đến những công trình không chỉ đẹp về thẩm mỹ mà còn bền vững theo thời gian.</p>
+      <blockquote>"Chữ tín là nền móng vững chắc nhất cho mọi công trình."</blockquote>
     </div>
   </div>
 </section>
 
 <section id="du-an">
   <div class="wrap">
-    <div class="sec-head"><span class="num">02 / CÔNG TRÌNH</span><h2>Sản phẩm <span>tâm huyết.</span></h2></div>
+    <div class="sec-head">
+      <span class="num">02 / CÔNG TRÌNH</span>
+      <h2>Sản phẩm <span>tâm huyết.</span></h2>
+    </div>
     <div class="project-tabs">
       <button class="tab-btn active" onclick="openTab('thiet-ke', this)">Thiết kế</button>
       <button class="tab-btn" onclick="openTab('thi-cong', this)">Thi công</button>
@@ -183,72 +273,110 @@
   </div>
 </section>
 
-<section id="thu-vien">
+<section id="quy-trinh">
   <div class="wrap">
-    <div class="sec-head"><span class="num">03 / THƯ VIỆN ẢNH</span><h2>Hình ảnh <span>thực tế.</span></h2></div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070" alt="Công trình 1"></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070" alt="Công trình 2"></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070" alt="Công trình 3"></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2070" alt="Công trình 4"></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070" alt="Công trình 5"></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070" alt="Công trình 6"></div>
+    <div class="sec-head" style="text-align: center; margin: 0 auto 60px auto;">
+      <span class="num">03 / QUY TRÌNH</span>
+      <h2>Từ bản vẽ <span>đến hiện thực.</span></h2>
+    </div>
+    <div class="process-timeline">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Tư vấn & Lắng nghe</h4>
+        <p>Tiếp nhận ý tưởng, nhu cầu và ngân sách dự kiến của bạn.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>Khảo sát & Báo giá</h4>
+        <p>Đo đạc thực tế, lên phương án thiết kế và dự toán chi phí chi tiết.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Ký kết Hợp đồng</h4>
+        <p>Thống nhất các điều khoản, tiến độ và phụ lục vật liệu rõ ràng.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h4>Thi công</h4>
+        <p>Khởi công xây dựng, giám sát chặt chẽ tiến độ và chất lượng từng ngày.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <h4>Nghiệm thu & Bảo hành</h4>
+        <p>Bàn giao mặt bằng, kiểm tra kỹ lưỡng và cam kết bảo hành dài hạn.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="loi-the">
+  <div class="wrap">
+    <div class="sec-head" style="text-align: center; margin: 0 auto 60px auto;">
+      <span class="num">04 / LỢI THẾ</span>
+      <h2>Lý do khách hàng <span>tin chọn.</span></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <i class="fas fa-file-invoice-dollar"></i>
+        <h4>Báo giá minh bạch</h4>
+        <p>Không phát sinh chi phí trong quá trình thi công. Mọi vật liệu đều có chứng từ rõ ràng.</p>
+      </div>
+      <div class="why-item">
+        <i class="fas fa-history"></i>
+        <h4>Cam kết tiến độ</h4>
+        <p>Bàn giao đúng hẹn, có phạt hợp đồng nếu chậm trễ để đảm bảo quyền lợi khách hàng.</p>
+      </div>
+      <div class="why-item">
+        <i class="fas fa-shield-alt"></i>
+        <h4>Bảo hành dài hạn</h4>
+        <p>Chế độ bảo hành kết cấu lên đến 5 năm, hỗ trợ bảo trì trọn đời công trình.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="danh-gia">
   <div class="wrap">
-    <div class="sec-head"><span class="num">04 / ĐÁNH GIÁ</span><h2>Khách hàng <span>nói gì?</span></h2></div>
-    <div class="testimonial-grid">
-      <div class="testi-item">
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" alt="Khách hàng" class="testi-avatar">
-        <div class="testi-content">
-          <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p>"Đội ngũ làm việc rất chuyên nghiệp, tiến độ nhanh, chất lượng hoàn thiện tốt hơn mình mong đợi."</p>
-          <div class="testi-author"><h5>Anh Minh</h5><span>Chủ quán Cafe - Quy Nhơn</span></div>
-        </div>
-      </div>
-      <div class="testi-item">
-        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Khách hàng" class="testi-avatar">
-        <div class="testi-content">
-          <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-          <p>"Báo giá rõ ràng, không phát sinh. Rất hài lòng với ngôi nhà mới do HUY HOÀNG thi công."</p>
-          <div class="testi-author"><h5>Chị Hoa</h5><span>Nhà phố - Gia Lai</span></div>
-        </div>
-      </div>
+    <div class="sec-head">
+      <span class="num">05 / ĐÁNH GIÁ</span>
+      <h2>Khách hàng <span>nói gì?</span></h2>
     </div>
-  </div>
-</section>
-
-<section id="quy-trinh">
-  <div class="wrap">
-    <div class="sec-head"><span class="num">05 / QUY TRÌNH</span><h2>Từ bản vẽ <span>đến hiện thực.</span></h2></div>
-    <div class="process-grid">
-      <div class="step-card"><div class="step-num">01</div><div class="step-icon"><i class="fas fa-comments"></i></div><h4>Tư vấn & Lắng nghe</h4><p>Tiếp nhận ý tưởng, nhu cầu và ngân sách.</p></div>
-      <div class="step-card"><div class="step-num">02</div><div class="step-icon"><i class="fas fa-ruler-combined"></i></div><h4>Khảo sát & Báo giá</h4><p>Đo đạc, lên phương án và dự toán.</p></div>
-      <div class="step-card"><div class="step-num">03</div><div class="step-icon"><i class="fas fa-file-signature"></i></div><h4>Ký kết Hợp đồng</h4><p>Thống nhất điều khoản, tiến độ.</p></div>
-      <div class="step-card"><div class="step-num">04</div><div class="step-icon"><i class="fas fa-hard-hat"></i></div><h4>Thi công</h4><p>Khởi công, giám sát chặt chẽ.</p></div>
-      <div class="step-card"><div class="step-num">05</div><div class="step-icon"><i class="fas fa-clipboard-check"></i></div><h4>Nghiệm thu</h4><p>Bàn giao, kiểm tra kỹ lưỡng.</p></div>
-      <div class="step-card"><div class="step-num">06</div><div class="step-icon"><i class="fas fa-shield-alt"></i></div><h4>Bảo hành</h4><p>Bảo hành dài hạn, đồng hành trọn đời.</p></div>
+    <div class="testi-grid">
+      <div class="testi-item">
+        <p>"Mình chọn HUY HOÀNG vì các bạn làm rất chuyên nghiệp, từ khâu tư vấn đến thi công đều rất chỉn chu. Gia đình mình rất hài lòng với không gian mới."</p>
+        <div class="testi-author">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" alt="Khách hàng">
+          <div><h5>Anh Tuấn</h5><span>Chủ quán Cafe - Quy Nhơn</span></div>
+        </div>
+      </div>
+      <div class="testi-item">
+        <p>"Tiến độ thi công cực kỳ đúng hẹn, báo giá không phát sinh. Đội ngũ thợ làm việc gọn gàng, sạch sẽ. Rất đáng để tin tưởng!"</p>
+        <div class="testi-author">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Khách hàng">
+          <div><h5>Chị Lan</h5><span>Xây nhà phố - Gia Lai</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="lien-he" style="border-bottom: none;">
   <div class="wrap">
-    <div class="sec-head"><span class="num">06 / BẮT ĐẦU DỰ ÁN</span><h2>Hãy kể chúng tôi nghe<br><span>về không gian của bạn.</span></h2></div>
+    <div class="sec-head">
+      <span class="num">06 / LIÊN HỆ</span>
+      <h2>Hãy kể chúng tôi nghe<br><span>về không gian của bạn.</span></h2>
+    </div>
     <div class="contact-grid">
-      <div>
-        <div style="display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line);"><span style="color:var(--muted); width:120px;">Địa chỉ</span><div>35 Trần An Tư, Quy Nhơn</div></div>
-        <div style="display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line);"><span style="color:var(--muted); width:120px;">Hotline 1</span><div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);">0769 425 424</div></div>
-        <div style="display: flex; gap: 20px; padding: 20px 0;"><span style="color:var(--muted); width:120px;">Hotline 2</span><div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);">0944 437 238</div></div>
+      <div class="contact-info">
+        <div class="line"><span>Địa chỉ</span><div>35 Trần An Tư, Quy Nhơn</div></div>
+        <div class="line"><span>Hotline 1</span><div style="color: var(--accent); font-weight: 600;">0769 425 424</div></div>
+        <div class="line"><span>Hotline 2</span><div style="color: var(--accent); font-weight: 600;">0944 437 238</div></div>
       </div>
-      <div class="contact-form-box">
+      <div class="contact-form">
         <form id="contactForm">
-          <div class="form-group"><label>Họ và tên *</label><input type="text" id="name" required></div>
-          <div class="form-group"><label>Số điện thoại *</label><input type="tel" id="phone" required></div>
-          <div class="form-group"><label>Nhu cầu của bạn</label><textarea id="message" rows="4"></textarea></div>
+          <div class="form-group"><label>Họ và tên *</label><input type="text" id="name" required placeholder="Nhập tên của bạn"></div>
+          <div class="form-group"><label>Số điện thoại *</label><input type="tel" id="phone" required placeholder="Nhập số điện thoại"></div>
+          <div class="form-group"><label>Nhu cầu của bạn</label><textarea id="message" rows="4" placeholder="Ví dụ: Tôi cần xây nhà phố 3 tầng..."></textarea></div>
           <button type="submit" class="submit-btn" id="submitBtn">Gửi Yêu Cầu</button>
         </form>
       </div>
@@ -256,7 +384,7 @@
   </div>
 </section>
 
-<div class="wrap"><footer><div>© 2024 HUY HOÀNG.</div><div>QUY NHƠN / GIA LAI</div></footer></div>
+<div class="wrap"><footer><div>© 2024 HUY HOÀNG. ALL RIGHTS RESERVED.</div><div>QUY NHƠN / GIA LAI</div></footer></div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -272,14 +400,6 @@
   };
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
-  let currentSlide = 0;
-  const slides = document.querySelectorAll('.slide');
-  setInterval(() => {
-    slides[currentSlide].classList.remove('active');
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add('active');
-  }, 4000);
 
   document.getElementById('contactForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -320,7 +440,6 @@
   }
 </script>
 
-<!-- CHATBOT AI -->
 <script type="text/javascript">
   (function(){
     var d=document;
