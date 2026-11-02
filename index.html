@@ -4,329 +4,332 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HUY HOÀNG – Xây Dựng Quy Nhơn</title>
-<meta name="description" content="Nhà thầu xây dựng chuyên nghiệp cho nhà phố, quán cà phê và nhà hàng tại Quy Nhơn, Gia Lai. Từ ý tưởng đầu tiên đến công trình hoàn thiện.">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <style>
-  :root{
-    --bg:#0a0a0a;
-    --bg-2:#121212;
-    --fg:#f5f5f5;
-    --muted:#888;
-    --line:#222;
-    --accent:#c9a227;
-    --font: 'Inter', sans-serif;
-    --mono: 'Space Mono', monospace;
-  }
+  :root{ --bg:#0a0a0a; --bg-2:#121212; --fg:#f5f5f5; --muted:#888; --line:#222; --accent:#c9a227; }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{
-    background:var(--bg); color:var(--fg); font-family:var(--font);
-    line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
-  }
+  body{ background:var(--bg); color:var(--fg); font-family:'Inter', sans-serif; line-height:1.6; overflow-x:hidden; }
   a{color:inherit;text-decoration:none}
   .wrap{max-width:1300px;margin:0 auto;padding:0 32px}
-
-  /* --- LOGO BẰNG SVG --- */
-  .logo-svg { display: flex; align-items: center; gap: 12px; }
-  .logo-svg svg { height: 28px; width: auto; }
   
-  /* --- HEADER / NAV --- */
-  header{
-    position:fixed; top:0; left:0; width:100%; z-index:100;
-    display:flex; justify-content:space-between; align-items:center;
-    padding:20px 40px; background:rgba(10,10,10,0.85); backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line);
-  }
+  /* HEADER */
+  header{ position:fixed; top:0; left:0; width:100%; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:15px 40px; background:rgba(10,10,10,0.85); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+  .brand-text { font-size: 20px; font-weight: 800; letter-spacing: 0.1em; color: var(--fg); }
+  .brand-text span { color: var(--accent); }
   .nav-links { display: flex; gap: 32px; }
-  .nav-links a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.3s; }
+  .nav-links a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.3s; font-weight: 600;}
   .nav-links a:hover { color: var(--accent); }
 
-  /* --- FLOATING CONTACT (Tinh tế hơn) --- */
-  .floating-contact {
-    position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 999;
-  }
-  .floating-contact a {
-    width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 20px; color: #fff; background: var(--bg-2); border: 1px solid var(--line);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.3s;
-  }
-  .floating-contact a:hover { transform: scale(1.1); border-color: var(--accent); color: var(--accent); }
-  .floating-contact .btn-zalo:hover { background: #0068FF; color: #fff; border-color: #0068FF; }
-  .floating-contact .btn-fb:hover { background: #1877F2; color: #fff; border-color: #1877F2; }
-  .floating-contact .btn-phone:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+  /* NÚT LIÊN HỆ NỔI & LOGO GÓC DƯỚI */
+  .floating-bottom { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column-reverse; gap: 20px; z-index: 999; align-items: flex-end;}
+  .contact-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;}
+  .contact-group a { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; background: var(--bg-2); border: 1px solid var(--line); box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: all 0.3s; }
+  .contact-group a:hover { transform: scale(1.1); border-color: var(--accent); }
+  .contact-group .btn-phone { background: var(--accent); color: #000; }
+  .bottom-logo { width: 120px; opacity: 0.8; mix-blend-mode: screen; filter: sepia(1) saturate(5) hue-rotate(5deg) brightness(1.2); transition: opacity 0.3s;}
+  .bottom-logo:hover { opacity: 1; }
 
-  /* --- HERO --- */
-  .hero{
-    position: relative; padding: 200px 0 150px; min-height: 95vh; display: flex; align-items: center;
-    border-bottom: 1px solid var(--line);
-    background: linear-gradient(to right, rgba(10,10,10,0.95) 30%, rgba(10,10,10,0.6)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop') center/cover;
-  }
-  .hero .kicker { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; display: block;}
-  .hero h1 { font-size: clamp(3.5rem, 8vw, 7.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; margin-bottom: 30px; }
-  .hero h1 .gold { color: var(--accent); font-style: italic; font-family: var(--mono); font-weight: 400; }
-  .hero p.lead { max-width: 500px; color: #ccc; font-size: 1.1rem; font-weight: 300; }
+  /* HERO */
+  .hero { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; }
+  .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out, transform 6s linear; background-size: cover; background-position: center; transform: scale(1); }
+  .slide.active { opacity: 1; transform: scale(1.05); }
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,10,10,0.95) 20%, rgba(10,10,10,0.4)); z-index: 1; }
+  .hero-content { position: relative; z-index: 2; width: 100%; padding-top: 80px; }
+  .hero .kicker { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; display: block; border-left: 3px solid var(--accent); padding-left: 10px;}
+  .hero h1 { font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 800; line-height: 0.95; margin-bottom: 30px; }
+  .hero h1 .gold { color: var(--accent); font-style: italic; font-family: 'Space Mono', monospace; font-weight: 400; }
+  .hero p { max-width: 600px; color: #ccc; font-size: 1.1rem; margin-bottom: 40px; }
+  .btn-primary { display: inline-block; padding: 16px 36px; background: var(--accent); color: #000; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 13px; transition: all 0.3s; }
+  .btn-primary:hover { background: #fff; transform: translateY(-3px); }
 
-  /* --- BRAND BLOCK --- */
-  .brandblock{ padding: 120px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .brandblock .big { font-size: clamp(4rem, 12vw, 10rem); font-weight: 800; line-height: 0.8; letter-spacing: -0.04em; }
-  .brandblock .big span { display: block; color: transparent; -webkit-text-stroke: 1px #555; }
-  .brandblock .quote { font-size: 1.4rem; line-height: 1.7; font-weight: 300; padding-left: 30px; border-left: 1px solid var(--accent); }
-  .brandblock .quote small { display: block; margin-top: 24px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--accent); }
+  .stats-section { background: var(--bg-2); border-bottom: 1px solid var(--line); padding: 60px 0; position: relative; z-index: 10; margin-top: -30px;}
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
+  .stat-item h3 { font-size: 3rem; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
+  .stat-item p { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); text-transform: uppercase; }
 
-  /* --- SECTION COMMON --- */
   section { padding: 120px 0; border-bottom: 1px solid var(--line); }
   .sec-head { margin-bottom: 60px; }
-  .sec-head .num { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-bottom: 16px; }
-  .sec-head h2 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+  .sec-head .num { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; display: block; margin-bottom: 16px; }
+  .sec-head h2 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; }
   .sec-head h2 span { color: var(--muted); font-weight: 300; }
 
-  /* --- PROJECTS (Dự án tiêu biểu) --- */
-  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .project-item {
-    position: relative; height: 400px; overflow: hidden; border: 1px solid var(--line);
-  }
-  .project-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.6s; }
-  .project-item:hover img { filter: grayscale(0%); transform: scale(1.05); }
-  .project-info {
-    position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
-    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-  }
-  .project-info h4 { font-size: 1.4rem; font-weight: 600; margin-bottom: 8px; }
-  .project-info p { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about-img img { width: 100%; border: 1px solid var(--line); padding: 10px; }
+  .about-text p { font-size: 1.1rem; color: #ccc; margin-bottom: 20px; font-weight: 300; }
 
-  /* --- SERVICES --- */
-  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .service-card { background: var(--bg-2); border: 1px solid var(--line); padding: 40px; transition: all 0.3s; display: flex; flex-direction: column; }
-  .service-card:hover { border-color: #444; transform: translateY(-5px); }
-  .service-card h3 { font-size: 1.3rem; margin-bottom: 16px; font-weight: 600; }
-  .service-card p { color: var(--muted); font-size: 0.95rem; flex: 1; font-weight: 300; margin-bottom: 30px;}
-  .service-card .link { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
-  .service-card .link::after { content: " →"; transition: margin 0.3s; }
-  .service-card:hover .link::after { margin-left: 5px; }
+  .project-tabs { display: flex; gap: 30px; margin-bottom: 40px; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+  .tab-btn { background: none; border: none; color: var(--muted); font-size: 1.1rem; font-weight: 600; cursor: pointer; padding: 10px 0; position: relative; text-transform: uppercase; }
+  .tab-btn.active { color: var(--accent); }
+  .tab-btn.active::after { content: ""; position: absolute; bottom: -11px; left: 0; width: 100%; height: 2px; background: var(--accent); }
+  .project-content { display: none; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .project-content.active { display: grid; animation: fadeIn 0.5s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .project-item { position: relative; height: 300px; overflow: hidden; border: 1px solid var(--line); }
+  .project-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+  .project-item:hover img { transform: scale(1.1); }
+  .project-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); transform: translateY(20px); opacity: 0; transition: all 0.4s; }
+  .project-item:hover .project-info { transform: translateY(0); opacity: 1; }
+  .project-info h4 { font-size: 1.2rem; font-weight: 600; margin-bottom: 4px; color: #fff;}
+  .project-info p { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); }
 
-  /* --- PROCESS --- */
-  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .step { background: var(--bg); padding: 40px 30px; }
-  .step .n { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-bottom: 40px; display: block; }
-  .step h4 { font-size: 1.1rem; margin-bottom: 12px; font-weight: 500; }
-  .step p { color: var(--muted); font-size: 0.9rem; font-weight: 300; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+  .gallery-item { height: 250px; overflow: hidden; border: 1px solid var(--line); }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.5s; }
+  .gallery-item:hover img { filter: grayscale(0%); transform: scale(1.05); }
 
-  /* --- CONTACT --- */
+  .testimonial-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+  .testi-item { background: var(--bg-2); padding: 40px; border: 1px solid var(--line); display: flex; gap: 20px; }
+  .testi-avatar { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); }
+  .testi-content { flex: 1; }
+  .testi-stars { color: var(--accent); font-size: 12px; margin-bottom: 10px; }
+  .testi-content p { font-style: italic; color: #ccc; margin-bottom: 15px; font-size: 0.95rem; }
+  .testi-author h5 { font-size: 1rem; color: var(--fg); }
+  .testi-author span { font-size: 0.8rem; color: var(--muted); }
+
+  .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+  .step-card { background: var(--bg-2); border: 1px solid var(--line); padding: 40px; position: relative; }
+  .step-num { font-family: 'Space Mono', monospace; font-size: 3rem; font-weight: 800; color: #222; position: absolute; top: 20px; right: 30px; }
+  .step-icon { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
+  .step-card h4 { font-size: 1.2rem; margin-bottom: 10px; }
+  .step-card p { color: var(--muted); font-size: 0.95rem; }
+
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-  .contact-info .line { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--line); }
-  .contact-info .line span { font-family: var(--mono); font-size: 11px; color: var(--muted); width: 120px; text-transform: uppercase; padding-top: 4px;}
-  .contact-info .line div { font-size: 1.1rem; font-weight: 300; }
-  .contact-info .hotline { font-size: 2rem; font-weight: 800; color: var(--accent); margin: 8px 0; display: block; }
-  
-  .contact-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-  .contact-buttons a { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px; font-weight: 600; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s; border: 1px solid var(--line); background: var(--bg-2); }
-  .contact-buttons a:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+  .contact-form-box { background: var(--bg-2); border: 1px solid var(--line); padding: 40px; }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
+  .form-group input, .form-group textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); color: var(--fg); padding: 15px; outline: none; }
+  .form-group input:focus { border-color: var(--accent); }
+  .submit-btn { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; font-weight: 700; cursor: pointer; }
+  footer { padding: 40px 0; display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); border-top: 1px solid var(--line); }
 
-  /* --- FOOTER --- */
-  footer { padding: 40px 0; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; border-top: 1px solid var(--line); }
-
-  /* --- RESPONSIVE --- */
   @media(max-width: 992px) {
-    .brandblock, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-    .services-grid { grid-template-columns: 1fr; }
-    .process-grid { grid-template-columns: 1fr 1fr; }
-    .projects-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; } 
-    .hero h1 { font-size: 4rem; }
-  }
-  @media(max-width: 600px) {
-    .process-grid { grid-template-columns: 1fr; }
-    header { padding: 16px 20px; }
-    .wrap { padding: 0 20px; }
-    .hero { padding: 140px 0 100px; }
-    .floating-contact { bottom: 20px; right: 20px; }
+    .stats-grid, .about-grid, .gallery-grid, .testimonial-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    .project-content.active, .process-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .bottom-logo { width: 80px; }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER & MENU -->
 <header>
-  <a href="#" class="logo-svg">
-    <!-- Logo vẽ bằng SVG -->
-    <svg viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
-      <text x="0" y="35" font-family="Inter, sans-serif" font-size="28" font-weight="800" fill="#f5f5f5" letter-spacing="2">HUY</text>
-      <text x="65" y="35" font-family="Inter, sans-serif" font-size="28" font-weight="800" fill="#c9a227" letter-spacing="2">HOÀNG</text>
-      <line x1="0" y1="44" x2="180" y2="44" stroke="#c9a227" stroke-width="1.5"/>
-      <circle cx="185" cy="44" r="2" fill="#c9a227"/>
-    </svg>
-  </a>
+  <a href="#" class="brand-text">HUY <span>HOÀNG</span></a>
   <div class="nav-links">
-    <a href="#du-an">Dự án</a>
-    <a href="#dich-vu">Dịch vụ</a>
-    <a href="#quy-trinh">Quy trình</a>
+    <a href="#ve-chung-toi">Giới thiệu</a>
+    <a href="#du-an">Công trình</a>
+    <a href="#thu-vien">Thư viện</a>
+    <a href="#danh-gia">Đánh giá</a>
     <a href="#lien-he">Liên hệ</a>
+    <a href="admin.html" style="color:var(--accent); font-weight: 800;">QUẢN TRỊ</a>
   </div>
 </header>
 
-<!-- NÚT LIÊN HỆ NỔI -->
-<div class="floating-contact">
-  <a href="tel:0769425424" class="btn-phone" title="Gọi ngay"><i class="fas fa-phone-alt"></i></a>
-  <a href="https://zalo.me/0769425424" target="_blank" class="btn-zalo" title="Chat Zalo"><i class="fas fa-comment-dots"></i></a>
-  <a href="https://facebook.com" target="_blank" class="btn-fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+<div class="floating-bottom">
+  <div class="contact-group">
+    <a href="tel:0944437238" class="btn-phone" title="Gọi ngay"><i class="fas fa-phone-alt"></i></a>
+    <a href="https://zalo.me/0944437238" target="_blank" style="background:#0068FF;"><i class="fas fa-comment-dots"></i></a>
+    <a href="https://www.facebook.com/profile.php?id=61594158232252" target="_blank" style="background:#1877F2;"><i class="fab fa-facebook-f"></i></a>
+  </div>
+  <!-- NHỚ DÁN LINK ẢNH LOGO CỦA MÀY VÀO ĐÂY -->
+  <img src="https://i.ibb.co/your-image-link/logo.png" alt="Logo" class="bottom-logo">
 </div>
 
-<!-- HERO -->
 <section class="hero" style="border-bottom: none;">
-  <div class="wrap">
-    <span class="kicker">Kiến trúc & Xây dựng</span>
+  <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop');"></div>
+  <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop');"></div>
+  <div class="hero-overlay"></div>
+  <div class="wrap hero-content">
+    <span class="kicker">Nhà thầu xây dựng chuyên nghiệp</span>
     <h1>Kiến tạo<br>không gian<br><span class="gold">có giá trị.</span></h1>
-    <p class="lead">Nhà thầu xây dựng chuyên nghiệp cho nhà phố, quán cà phê và nhà hàng. Từ ý tưởng đầu tiên đến công trình hoàn thiện.</p>
+    <p>Đồng hành cùng bạn từ ý tưởng đầu tiên đến công trình hoàn thiện. Giải pháp thiết kế và thi công tối ưu cho nhà phố, quán cà phê và nhà hàng tại Quy Nhơn.</p>
+    <a href="bao-gia.html" class="btn-primary">Nhận Báo Giá Ngay</a>
   </div>
 </section>
 
-<!-- BRAND BLOCK -->
-<div class="wrap">
-  <div class="brandblock">
-    <div>
-      <div class="big">HUY<span>HOÀNG</span></div>
-    </div>
-    <div class="quote">
-      Chúng tôi tin một công trình tốt bắt đầu từ việc lắng nghe đúng nhu cầu, giải quyết đúng bài toán và hoàn thiện đến từng chi tiết nhỏ.
-      <small>[ PRECISION IS A FORM OF CARE ]</small>
-    </div>
+<div class="stats-section">
+  <div class="wrap stats-grid">
+    <div class="stat-item"><h3>5+</h3><p>Năm Kinh Nghiệm</p></div>
+    <div class="stat-item"><h3>100+</h3><p>Công Trình</p></div>
+    <div class="stat-item"><h3>100%</h3><p>Đúng Tiến Độ</p></div>
+    <div class="stat-item"><h3>24/7</h3><p>Hỗ Trợ</p></div>
   </div>
 </div>
 
-<!-- DỰ ÁN TIÊU BIỂU -->
+<section id="ve-chung-toi">
+  <div class="wrap about-grid">
+    <div class="about-img"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070&auto=format&fit=crop" alt="Đội ngũ HUY HOÀNG"></div>
+    <div class="about-text">
+      <div class="sec-head" style="margin-bottom: 30px;">
+        <span class="num">01 / VỀ CHÚNG TÔI</span>
+        <h2>Uy tín tạo nên <span>thương hiệu.</span></h2>
+      </div>
+      <p>Chúng tôi không bắt đầu bằng những bản vẽ khô khan, mà bắt đầu bằng việc <strong>lắng nghe</strong> cách bạn muốn sống, muốn kinh doanh trong không gian đó.</p>
+      <p>Với đội ngũ kiến trúc sư, kỹ sư giàu kinh nghiệm, HUY HOÀNG cam kết mang đến những công trình không chỉ đẹp về thẩm mỹ mà còn bền vững theo thời gian, tối ưu công năng và chi phí.</p>
+    </div>
+  </div>
+</section>
+
 <section id="du-an">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="num">01 / DỰ ÁN TIÊU BIỂU</span>
-      <h2>Dấu ấn <span>của sự chỉn chu.</span></h2>
+    <div class="sec-head"><span class="num">02 / CÔNG TRÌNH</span><h2>Sản phẩm <span>tâm huyết.</span></h2></div>
+    <div class="project-tabs">
+      <button class="tab-btn active" onclick="openTab('thiet-ke', this)">Thiết kế</button>
+      <button class="tab-btn" onclick="openTab('thi-cong', this)">Thi công</button>
     </div>
-    <div class="projects-grid">
-      <!-- Dự án 1 -->
-      <div class="project-item">
-        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop" alt="Nhà phố hiện đại">
-        <div class="project-info">
-          <h4>Nhà phố hiện đại</h4>
-          <p>Quy Nhơn - 2023</p>
-        </div>
-      </div>
-      <!-- Dự án 2 -->
-      <div class="project-item">
-        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2047&auto=format&fit=crop" alt="Quán cà phê">
-        <div class="project-info">
-          <h4>Quán cà phê sân vườn</h4>
-          <p>Quy Nhơn - 2022</p>
-        </div>
-      </div>
-    </div>
+    <div id="thiet-ke" class="project-content active"><div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--muted);">Đang tải dữ liệu...</div></div>
+    <div id="thi-cong" class="project-content"><div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--muted);">Đang tải dữ liệu...</div></div>
   </div>
 </section>
 
-<!-- DỊCH VỤ -->
-<section id="dich-vu">
+<section id="thu-vien">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="num">02 / DỊCH VỤ</span>
-      <h2>Một đối tác.<br><span>Mọi giải pháp.</span></h2>
+    <div class="sec-head"><span class="num">03 / THƯ VIỆN ẢNH</span><h2>Hình ảnh <span>thực tế.</span></h2></div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070" alt="Công trình 1"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070" alt="Công trình 2"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070" alt="Công trình 3"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=2070" alt="Công trình 4"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070" alt="Công trình 5"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2070" alt="Công trình 6"></div>
     </div>
-    <div class="services-grid">
-      <div class="service-card">
-        <h3>Xây dựng nhà phố</h3>
-        <p>Thi công chỉn chu từ phần thô đến hoàn thiện, bám sát hồ sơ và tiến độ cam kết.</p>
-        <div class="link">Tìm hiểu thêm</div>
+  </div>
+</section>
+
+<section id="danh-gia">
+  <div class="wrap">
+    <div class="sec-head"><span class="num">04 / ĐÁNH GIÁ</span><h2>Khách hàng <span>nói gì?</span></h2></div>
+    <div class="testimonial-grid">
+      <div class="testi-item">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" alt="Khách hàng" class="testi-avatar">
+        <div class="testi-content">
+          <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"Đội ngũ làm việc rất chuyên nghiệp, tiến độ nhanh, chất lượng hoàn thiện tốt hơn mình mong đợi."</p>
+          <div class="testi-author"><h5>Anh Minh</h5><span>Chủ quán Cafe - Quy Nhơn</span></div>
+        </div>
       </div>
-      <div class="service-card">
-        <h3>Cải tạo không gian</h3>
-        <p>Tái thiết mặt bằng cũ thành không gian sống và kinh doanh mới mẻ, hiệu quả.</p>
-        <div class="link">Tìm hiểu thêm</div>
-      </div>
-      <div class="service-card">
-        <h3>Thiết kế & hoàn thiện</h3>
-        <p>Tư vấn vật liệu, công năng và phong cách để công trình đẹp bền theo thời gian.</p>
-        <div class="link">Tìm hiểu thêm</div>
+      <div class="testi-item">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Khách hàng" class="testi-avatar">
+        <div class="testi-content">
+          <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"Báo giá rõ ràng, không phát sinh. Rất hài lòng với ngôi nhà mới do HUY HOÀNG thi công."</p>
+          <div class="testi-author"><h5>Chị Hoa</h5><span>Nhà phố - Gia Lai</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- QUY TRÌNH -->
 <section id="quy-trinh">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="num">03 / QUY TRÌNH</span>
-      <h2>Từ bản vẽ<br><span>đến hiện thực.</span></h2>
-    </div>
+    <div class="sec-head"><span class="num">05 / QUY TRÌNH</span><h2>Từ bản vẽ <span>đến hiện thực.</span></h2></div>
     <div class="process-grid">
-      <div class="step">
-        <span class="n">01</span>
-        <h4>Lắng nghe nhu cầu</h4>
-        <p>Tiếp nhận ý tưởng và mục tiêu của bạn.</p>
-      </div>
-      <div class="step">
-        <span class="n">02</span>
-        <h4>Khảo sát hiện trạng</h4>
-        <p>Đo đạc, phân tích mặt bằng thực tế.</p>
-      </div>
-      <div class="step">
-        <span class="n">03</span>
-        <h4>Tư vấn giải pháp</h4>
-        <p>Đề xuất phương án và ngân sách.</p>
-      </div>
-      <div class="step">
-        <span class="n">04</span>
-        <h4>Thi công hoàn thiện</h4>
-        <p>Bàn giao công trình chỉn chu.</p>
-      </div>
+      <div class="step-card"><div class="step-num">01</div><div class="step-icon"><i class="fas fa-comments"></i></div><h4>Tư vấn & Lắng nghe</h4><p>Tiếp nhận ý tưởng, nhu cầu và ngân sách.</p></div>
+      <div class="step-card"><div class="step-num">02</div><div class="step-icon"><i class="fas fa-ruler-combined"></i></div><h4>Khảo sát & Báo giá</h4><p>Đo đạc, lên phương án và dự toán.</p></div>
+      <div class="step-card"><div class="step-num">03</div><div class="step-icon"><i class="fas fa-file-signature"></i></div><h4>Ký kết Hợp đồng</h4><p>Thống nhất điều khoản, tiến độ.</p></div>
+      <div class="step-card"><div class="step-num">04</div><div class="step-icon"><i class="fas fa-hard-hat"></i></div><h4>Thi công</h4><p>Khởi công, giám sát chặt chẽ.</p></div>
+      <div class="step-card"><div class="step-num">05</div><div class="step-icon"><i class="fas fa-clipboard-check"></i></div><h4>Nghiệm thu</h4><p>Bàn giao, kiểm tra kỹ lưỡng.</p></div>
+      <div class="step-card"><div class="step-num">06</div><div class="step-icon"><i class="fas fa-shield-alt"></i></div><h4>Bảo hành</h4><p>Bảo hành dài hạn, đồng hành trọn đời.</p></div>
     </div>
   </div>
 </section>
 
-<!-- LIÊN HỆ -->
 <section id="lien-he" style="border-bottom: none;">
   <div class="wrap">
-    <div class="sec-head">
-      <span class="num">04 / BẮT ĐẦU DỰ ÁN</span>
-      <h2>Hãy kể chúng tôi nghe<br><span>về không gian của bạn.</span></h2>
-    </div>
-    
+    <div class="sec-head"><span class="num">06 / BẮT ĐẦU DỰ ÁN</span><h2>Hãy kể chúng tôi nghe<br><span>về không gian của bạn.</span></h2></div>
     <div class="contact-grid">
-      <div class="contact-info">
-        <p style="color: var(--muted); margin-bottom: 40px; font-weight: 300;">Để lại thông tin, đội ngũ HUY HOÀNG sẽ liên hệ tư vấn và trao đổi bước tiếp theo cùng bạn.</p>
-        
-        <div class="line">
-          <span>Địa chỉ</span>
-          <div>35 Trần An Tư, Quy Nhơn, Gia Lai</div>
-        </div>
-        <div class="line">
-          <span>Hotline 1</span>
-          <div class="hotline">0769 425 424</div>
-        </div>
-        <div class="line" style="border-bottom: none;">
-          <span>Hotline 2</span>
-          <div class="hotline">0944 437 238</div>
-        </div>
-      </div>
-      
       <div>
-        <p style="color: var(--muted); margin-bottom: 20px; font-size: 0.95rem;">Chọn cách liên hệ nhanh nhất với chúng tôi:</p>
-        <div class="contact-buttons">
-          <a href="tel:0769425424"><i class="fas fa-phone-alt"></i> Gọi Ngay: 0769 425 424</a>
-          <a href="https://zalo.me/0769425424" target="_blank"><i class="fas fa-comment-dots"></i> Chat Zalo</a>
-          <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i> Nhắn Facebook</a>
-        </div>
+        <div style="display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line);"><span style="color:var(--muted); width:120px;">Địa chỉ</span><div>35 Trần An Tư, Quy Nhơn</div></div>
+        <div style="display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line);"><span style="color:var(--muted); width:120px;">Hotline 1</span><div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);">0769 425 424</div></div>
+        <div style="display: flex; gap: 20px; padding: 20px 0;"><span style="color:var(--muted); width:120px;">Hotline 2</span><div style="font-size: 1.5rem; font-weight: 800; color: var(--accent);">0944 437 238</div></div>
+      </div>
+      <div class="contact-form-box">
+        <form id="contactForm">
+          <div class="form-group"><label>Họ và tên *</label><input type="text" id="name" required></div>
+          <div class="form-group"><label>Số điện thoại *</label><input type="tel" id="phone" required></div>
+          <div class="form-group"><label>Nhu cầu của bạn</label><textarea id="message" rows="4"></textarea></div>
+          <button type="submit" class="submit-btn" id="submitBtn">Gửi Yêu Cầu</button>
+        </form>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
-<div class="wrap">
-  <footer>
-    <div>© 2024 HUY HOÀNG. ALL RIGHTS RESERVED.</div>
-    <div>QUY NHƠN / GIA LAI</div>
-  </footer>
-</div>
+<div class="wrap"><footer><div>© 2024 HUY HOÀNG.</div><div>QUY NHƠN / GIA LAI</div></footer></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDKGFdF0Oe3_qyEnjnsNWk5W9K43GvjMrw",
+    authDomain: "huyhoang-web.firebaseapp.com",
+    projectId: "huyhoang-web",
+    storageBucket: "huyhoang-web.firebasestorage.app",
+    messagingSenderId: "894352526276",
+    appId: "1:894352526276:web:93a58b36dbacc0dafef291"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  setInterval(() => {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }, 4000);
+
+  document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.innerText = "Đang gửi...";
+    await addDoc(collection(db, "contacts"), {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      message: document.getElementById('message').value,
+      timestamp: new Date()
+    });
+    alert("Cảm ơn bạn! Yêu cầu đã được gửi thành công."); 
+    e.target.reset(); btn.innerText = "Gửi Yêu Cầu";
+  });
+
+  async function loadProjects() {
+    const tkBox = document.getElementById('thiet-ke');
+    const tcBox = document.getElementById('thi-cong');
+    tkBox.innerHTML = ''; tcBox.innerHTML = '';
+    const q = query(collection(db, "projects"), orderBy("timestamp", "desc"));
+    const snapshot = await getDocs(q);
+    let hasTK = false, hasTC = false;
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const html = `<div class="project-item"><img src="${data.imageUrl}"><div class="project-info"><h4>${data.title}</h4><p>${data.description}</p></div></div>`;
+      if (data.type === 'thiet-ke') { tkBox.innerHTML += html; hasTK = true; }
+      if (data.type === 'thi-cong') { tcBox.innerHTML += html; hasTC = true; }
+    });
+    if (!hasTK) tkBox.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--muted);">Chưa có dự án.</div>';
+    if (!hasTC) tcBox.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--muted);">Chưa có dự án.</div>';
+  }
+  loadProjects();
+
+  window.openTab = function(tabName, btn) {
+    document.querySelectorAll('.project-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active'); btn.classList.add('active');
+  }
+</script>
+
+<!-- CHATBOT AI -->
+<script type="text/javascript">
+  (function(){
+    var d=document;
+    var s=d.createElement("script");
+    s.src="https://sitespeak.ai/chatbots/aafac0ca-d8f1-454d-bc9a-29c70ea08ed2.js";
+    s.async=1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+</script>
 
 </body>
 </html>
