@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản Trị - HUY HOÀNG</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#080808; --bg-2:#111; --fg:#f4f1ea; --muted:#999; --line:#222; --accent:#c9a227; --font-main: 'Inter', sans-serif; --font-serif: 'Cormorant Garamond', serif;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{ background:var(--bg); color:var(--fg); font-family:var(--font-main); padding: 40px; line-height: 1.8;}
+  .container { max-width: 1000px; margin: 0 auto; }
+  h1, h2 { font-family: var(--font-serif); font-weight: 400; color: var(--accent); margin-bottom: 20px; }
+  .card { background: var(--bg-2); border: 1px solid var(--line); padding: 40px; margin-bottom: 40px; }
+  
+  #login-screen { text-align: center; margin-top: 100px; }
+  #login-screen input { padding: 15px; width: 300px; background: var(--bg); border: 1px solid var(--line); color: white; margin-right: 10px; font-family: var(--font-main); outline: none;}
+  #login-screen button { padding: 15px 30px; background: var(--accent); border: none; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.1em;}
+  
+  #admin-screen { display: none; }
+  .form-group { margin-bottom: 20px; }
+  label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.1em;}
+  input[type="text"], input[type="file"], select, textarea { width: 100%; padding: 15px; background: var(--bg); border: 1px solid var(--line); color: white; font-family: var(--font-main); outline: none;}
+  button.btn-submit { padding: 18px; background: var(--accent); border: none; font-weight: 600; cursor: pointer; width: 100%; font-size: 14px; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.1em;}
+  
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--line); font-size: 0.95rem;}
+  th { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;}
+  .project-list img { width: 80px; height: 60px; object-fit: cover; }
+  .delete-btn { color: #ff4d4d; cursor: pointer; background: none; border: none; font-size: 13px; text-transform: uppercase;}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="login-screen">
+    <h1>Trang Quản Trị</h1>
+    <p style="color: var(--muted); margin-bottom: 30px;">Nhập mật khẩu để truy cập</p>
+    <input type="password" id="admin-pass" placeholder="Nhập mật khẩu...">
+    <button onclick="checkLogin()">Đăng nhập</button>
+  </div>
+
+  <div id="admin-screen">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 40px;">
+      <h1>Quản Lý Website</h1>
+      <button onclick="logout()" style="background: none; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 8px 20px; cursor: pointer; font-size: 12px; text-transform: uppercase;">Đăng xuất</button>
+    </div>
+
+    <div class="card">
+      <h2>Thêm Dự Án Mới</h2>
+      <form id="addProjectForm">
+        <div class="form-group"><label>Tên dự án</label><input type="text" id="prj-title" required placeholder="VD: Nhà phố 3 tầng Quy Nhơn"></div>
+        <div class="form-group"><label>Mô tả ngắn (VD: Quy Nhơn - 2023)</label><input type="text" id="prj-desc" required placeholder="Quy Nhơn - 2023"></div>
+        <div class="form-group">
+          <label>Loại dự án</label>
+          <select id="prj-type"><option value="thiet-ke">Thiết kế</option><option value="thi-cong">Thi công</option></select>
+        </div>
+        <div class="form-group"><label>Ảnh dự án (JPG, PNG)</label><input type="file" id="prj-img" accept="image/*" required></div>
+        <button type="submit" class="btn-submit" id="btn-add">Đang thêm... (Vui lòng đợi)</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Khách Hàng Đã Gửi Yêu Cầu</h2>
+      <table id="contacts-table">
+        <thead><tr><th>Họ tên</th><th>SĐT</th><th>Nhu cầu</th><th>Ngày gửi</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>Quản lý Dự án</h2>
+      <table class="project-list" id="projects-table">
+        <thead><tr><th>Ảnh</th><th>Tên dự án</th><th>Loại</th><th>Hành động</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDKGFdF0Oe3_qyEnjnsNWk5W9K43GvjMrw",
+    authDomain: "huyhoang-web.firebaseapp.com",
+    projectId: "huyhoang-web",
+    storageBucket: "huyhoang-web.firebasestorage.app",
+    messagingSenderId: "894352526276",
+    appId: "1:894352526276:web:93a58b36dbacc0dafef291"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  const PASSWORD = "huyhoang123"; // MẬT KHẨU ADMIN
+
+  window.checkLogin = function() {
+    if (document.getElementById('admin-pass').value === PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      loadData();
+    } else { alert("Sai mật khẩu!"); }
+  }
+
+  window.logout = function() {
+    document.getElementById('login-screen').style.display = 'block';
+    document.getElementById('admin-screen').style.display = 'none';
+  }
+
+  document.getElementById('addProjectForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-add');
+    btn.innerText = "Đang tải ảnh..."; btn.disabled = true;
+
+    try {
+      const file = document.getElementById('prj-img').files[0];
+      const storageRef = ref(storage, 'projects/' + Date.now() + '_' + file.name);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+      await addDoc(collection(db, "projects"), {
+        title: document.getElementById('prj-title').value,
+        description: document.getElementById('prj-desc').value,
+        type: document.getElementById('prj-type').value,
+        imageUrl: downloadURL,
+        timestamp: new Date()
+      });
+      alert("Thêm dự án thành công!");
+      document.getElementById('addProjectForm').reset();
+      loadData();
+    } catch (error) {
+      console.error(error); alert("Lỗi: " + error.message);
+    }
+    btn.innerText = "Thêm Dự Án"; btn.disabled = false;
+  });
+
+  async function loadData() {
+    const contactsSnap = await getDocs(collection(db, "contacts"));
+    let htmlC = '';
+    contactsSnap.forEach(d => {
+      const data = d.data();
+      htmlC += `<tr><td>${data.name}</td><td>${data.phone}</td><td>${data.message}</td><td>${data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleDateString('vi-VN') : ''}</td></tr>`;
+    });
+    document.querySelector('#contacts-table tbody').innerHTML = htmlC || '<tr><td colspan="4" style="color:var(--muted);">Chưa có khách.</td></tr>';
+
+    const q = query(collection(db, "projects"), orderBy("timestamp", "desc"));
+    const projSnap = await getDocs(q);
+    let htmlP = '';
+    projSnap.forEach(d => {
+      const data = d.data();
+      htmlP += `<tr><td><img src="${data.imageUrl}"></td><td>${data.title}</td><td>${data.type}</td><td><button class="delete-btn" onclick="deletePrj('${d.id}')">Xóa</button></td></tr>`;
+    });
+    document.querySelector('#projects-table tbody').innerHTML = htmlP || '<tr><td colspan="4" style="color:var(--muted);">Chưa có dự án.</td></tr>';
+  }
+
+  window.deletePrj = async function(id) {
+    if (confirm("Xóa dự án này?")) {
+      await deleteDoc(doc(db, "projects", id));
+      loadData();
+    }
+  }
+</script>
+</body>
+</html>

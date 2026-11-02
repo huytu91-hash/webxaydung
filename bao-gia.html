@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phần Mềm Báo Giá - HUY HOÀNG</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  :root{ --bg:#080808; --bg-2:#111; --fg:#f4f1ea; --muted:#999; --line:#222; --accent:#c9a227; --font-main: 'Inter', sans-serif; --font-serif: 'Cormorant Garamond', serif;}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{ background:var(--bg); color:var(--fg); font-family:var(--font-main); line-height:1.8; }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 20px}
+  
+  .back-home { display: inline-block; margin-bottom: 40px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;}
+  .back-home:hover { color: var(--accent); }
+
+  header { text-align: center; margin-bottom: 50px; }
+  header h1 { font-family: var(--font-serif); font-size: clamp(2rem, 5vw, 3rem); font-weight: 400; margin-bottom: 10px; line-height: 1.2; }
+  header h1 span { color: var(--accent); font-style: italic; }
+  
+  .mode-switch { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+  .mode-btn { padding: 15px 30px; font-size: 13px; font-weight: 500; cursor: pointer; background: transparent; color: var(--muted); border: 1px solid var(--line); text-transform: uppercase; letter-spacing: 0.1em; display: flex; align-items: center; gap: 10px; transition: 0.3s;}
+  .mode-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+  
+  .calc-container { background: var(--bg-2); border: 1px solid var(--line); padding: 50px; }
+  
+  /* TIẾN TRÌNH */
+  .progress-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; position: relative; }
+  .progress-bar::before { content: ""; position: absolute; top: 15px; left: 0; width: 100%; height: 1px; background: var(--line); z-index: 1; }
+  .step-indicator { position: relative; z-index: 2; background: var(--bg-2); padding: 0 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .step-circle { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); background: var(--bg-2); transition: all 0.3s; }
+  .step-indicator.active .step-circle { border-color: var(--accent); color: var(--accent); }
+  .step-indicator.active span { color: var(--accent); }
+  .step-indicator span { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+  .step-content { display: none; animation: fadeIn 0.5s ease; }
+  .step-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .step-title { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; margin-bottom: 10px; }
+  .step-desc { color: var(--muted); margin-bottom: 30px; font-size: 0.9rem; }
+  
+  .form-group { margin-bottom: 25px; }
+  .form-group label { display: block; font-size: 11px; color: var(--accent); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+  .form-group input, .form-group select { width: 100%; padding: 18px; background: var(--bg); border: 1px solid var(--line); color: var(--fg); font-size: 1rem; font-family: var(--font-main); outline: none; }
+  .form-group input:focus { border-color: var(--accent); }
+  
+  .package-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+  .package-card { border: 1px solid var(--line); padding: 25px; cursor: pointer; transition: all 0.3s; text-align: center; background: var(--bg); }
+  .package-card:hover { border-color: #555; }
+  .package-card.selected { border-color: var(--accent); background: rgba(201,162,39,0.05); }
+  .package-card h4 { font-family: var(--font-serif); font-size: 1.2rem; margin-bottom: 10px; color: var(--fg); }
+  .package-card p { color: var(--muted); font-size: 0.8rem; margin-bottom: 15px; min-height: 40px;}
+  .package-price { font-size: 1rem; color: var(--accent); font-weight: 600; }
+  
+  .btn-group { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .btn { padding: 15px 35px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border: none; transition: all 0.3s; display: flex; align-items: center; gap: 10px; }
+  .btn-back { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+  .btn-next { background: var(--accent); color: #000; }
+  
+  .result-box { text-align: center; padding: 20px 0; }
+  .result-label { font-size: 12px; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.1em;}
+  .result-price { font-family: var(--font-serif); font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 600; color: var(--accent); line-height: 1.1; margin-bottom: 20px; }
+  .result-details { background: var(--bg); border: 1px solid var(--line); padding: 20px; max-width: 500px; margin: 0 auto 20px; text-align: left; font-size: 0.9rem;}
+  .result-details div { display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding: 10px 0; }
+  .result-note { color: var(--muted); font-size: 0.8rem; margin-bottom: 30px; font-style: italic;}
+  
+  .final-form { max-width: 500px; margin: 0 auto; background: var(--bg); border: 1px solid var(--line); padding: 30px; }
+  .final-form input { width: 100%; padding: 15px; background: var(--bg-2); border: 1px solid var(--line); color: var(--fg); margin-bottom: 15px; outline: none; font-family: var(--font-main);}
+  .final-btn { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; font-weight: 600; text-transform: uppercase; cursor: pointer; letter-spacing: 0.1em;}
+  
+  @media(max-width: 768px) {
+    .package-grid { grid-template-columns: 1fr; } 
+    .calc-container { padding: 20px; } 
+    .progress-bar { display: none; } 
+    .mode-switch { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Về trang chủ</a>
+  
+  <header>
+    <h1>Phần mềm báo giá<br><span>thiết kế & xây dựng.</span></h1>
+  </header>
+
+  <div class="mode-switch">
+    <button class="mode-btn active" id="btn-design" onclick="switchMode('design')"><i class="fas fa-pen-ruler"></i> Báo giá thiết kế</button>
+    <button class="mode-btn" id="btn-build" onclick="switchMode('build')"><i class="fas fa-hammer"></i> Dự toán xây dựng</button>
+  </div>
+
+  <div class="calc-container">
+    <div class="progress-bar">
+      <div class="step-indicator active" id="indicator-1"><div class="step-circle">01</div><span>Diện tích</span></div>
+      <div class="step-indicator" id="indicator-2"><div class="step-circle">02</div><span id="step2-title">Chọn gói</span></div>
+      <div class="step-indicator" id="indicator-3"><div class="step-circle">03</div><span>Kết quả</span></div>
+    </div>
+
+    <div class="step-content active" id="step-1">
+      <h2 class="step-title">Bắt đầu từ mặt bằng.</h2>
+      <p class="step-desc">Nhập diện tích cần thiết kế hoặc thi công để nhận mức dự toán.</p>
+      <div class="form-group"><label>Diện tích sàn (m2)</label><input type="number" id="areaInput" value="100" min="10"></div>
+      <div class="form-group" id="floorsGroup" style="display:none;"><label>Số tầng</label><input type="number" id="floorsInput" value="1" min="1"></div>
+      <div class="btn-group"><div></div><button class="btn btn-next" onclick="nextStep(2)">Tiếp tục <i class="fas fa-arrow-right"></i></button></div>
+    </div>
+
+    <div class="step-content" id="step-2">
+      <div id="design-step2">
+        <h2 class="step-title">Chọn đúng gói cho công trình.</h2>
+        <div class="package-grid" id="designPackages"></div>
+      </div>
+      <div id="build-step2" style="display:none;">
+        <h2 class="step-title">Chọn kết cấu & gói thầu.</h2>
+        <div class="form-group"><label>Loại móng</label><select id="foundationSelect"><option value="0.3">Móng đơn (30%)</option><option value="0.5" selected>Móng cọc (50%)</option><option value="0.7">Móng băng (70%)</option></select></div>
+        <div class="form-group"><label>Loại mái</label><select id="roofSelect"><option value="0.3">Mái tôn (30%)</option><option value="0.5" selected>Mái bằng BTCT (50%)</option><option value="0.7">Mái ngói (70%)</option></select></div>
+        <div class="package-grid" id="buildPackages" style="margin-top:20px;"></div>
+      </div>
+      <div class="btn-group"><button class="btn btn-back" onclick="nextStep(1)"><i class="fas fa-arrow-left"></i> Quay lại</button><button class="btn btn-next" onclick="calculateResult()">Xem kết quả <i class="fas fa-arrow-right"></i></button></div>
+    </div>
+
+    <div class="step-content" id="step-3">
+      <div class="result-box">
+        <div class="result-label">Ngân sách dự kiến</div>
+        <div class="result-price" id="finalPrice">0 VNĐ</div>
+        <div class="result-details" id="resultDetails"></div>
+        <p class="result-note">* Đơn giá chưa bao gồm nội thất rời. Báo giá chính xác dựa trên khảo sát thực tế.</p>
+        <form class="final-form" id="contactForm">
+          <h3 style="margin-bottom: 20px; font-size: 1.2rem; font-family: var(--font-serif);">Nhận báo giá chi tiết</h3>
+          <input type="text" id="name" placeholder="Họ và tên *" required>
+          <input type="tel" id="phone" placeholder="Số điện thoại *" required>
+          <button type="submit" class="final-btn" id="submitBtn">Gửi Yêu Cầu</button>
+        </form>
+        <div class="btn-group" style="justify-content: center; border:none; margin-top:20px;"><button class="btn btn-back" onclick="nextStep(2)"><i class="fas fa-arrow-left"></i> Quay lại</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDKGFdF0Oe3_qyEnjnsNWk5W9K43GvjMrw",
+    authDomain: "huyhoang-web.firebaseapp.com",
+    projectId: "huyhoang-web",
+    storageBucket: "huyhoang-web.firebasestorage.app",
+    messagingSenderId: "894352526276",
+    appId: "1:894352526276:web:93a58b36dbacc0dafef291"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let currentMode = 'design';
+  let selectedPrice = 0;
+
+  const packages = {
+    design: [
+      { name: 'Tiết kiệm', price: 79000, desc: 'Mặt bằng 2D, phối cảnh 3D.' },
+      { name: 'Cơ bản', price: 119000, desc: 'Bản vẽ 2D chi tiết, điện nước.' },
+      { name: 'Hoàn thiện', price: 179000, desc: 'Kết cấu, 3D mặt tiền, hồ sơ.' }
+    ],
+    build: [
+      { name: 'Phần Thô', price: 3500000, desc: 'Móng, cột, dầm, sàn, mái' },
+      { name: 'Trọn Gói Cơ Bản', price: 5500000, desc: 'Thô + Hoàn thiện cơ bản' },
+      { name: 'Trọn Gói Cao Cấp', price: 7000000, desc: 'Thô + Nội thất cao cấp' }
+    ]
+  };
+
+  window.switchMode = function(mode) {
+    currentMode = mode;
+    document.getElementById('btn-design').classList.toggle('active', mode === 'design');
+    document.getElementById('btn-build').classList.toggle('active', mode === 'build');
+    document.getElementById('floorsGroup').style.display = mode === 'build' ? 'block' : 'none';
+    document.getElementById('design-step2').style.display = mode === 'design' ? 'block' : 'none';
+    document.getElementById('build-step2').style.display = mode === 'build' ? 'block' : 'none';
+    document.getElementById('step2-title').innerText = mode === 'design' ? 'Chọn gói' : 'Kết cấu';
+    nextStep(1); renderPackages();
+  }
+
+  function renderPackages() {
+    const dGrid = document.getElementById('designPackages'); dGrid.innerHTML = '';
+    packages.design.forEach((pkg, i) => {
+      const div = document.createElement('div');
+      div.className = 'package-card' + (i === 1 ? ' selected' : '');
+      div.onclick = function() { selectPackage(this, pkg.price); };
+      div.innerHTML = `<h4>${pkg.name}</h4><p>${pkg.desc}</p><div class="package-price">${pkg.price.toLocaleString('vi-VN')} đ/m2</div>`;
+      dGrid.appendChild(div);
+    });
+    const bGrid = document.getElementById('buildPackages'); bGrid.innerHTML = '';
+    packages.build.forEach((pkg, i) => {
+      const div = document.createElement('div');
+      div.className = 'package-card' + (i === 1 ? ' selected' : '');
+      div.onclick = function() { selectPackage(this, pkg.price); };
+      div.innerHTML = `<h4>${pkg.name}</h4><p>${pkg.desc}</p><div class="package-price">${pkg.price.toLocaleString('vi-VN')} đ/m2</div>`;
+      bGrid.appendChild(div);
+    });
+    selectedPrice = currentMode === 'design' ? packages.design[1].price : packages.build[1].price;
+  }
+  renderPackages();
+
+  window.nextStep = function(step) {
+    document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.step-indicator').forEach(el => el.classList.remove('active'));
+    document.getElementById('step-' + step).classList.add('active');
+    for(let i=1; i<=step; i++) document.getElementById('indicator-' + i).classList.add('active');
+  }
+
+  window.selectPackage = function(element, price) {
+    const parent = element.parentElement;
+    parent.querySelectorAll('.package-card').forEach(el => el.classList.remove('selected'));
+    element.classList.add('selected'); selectedPrice = price;
+  }
+
+  window.calculateResult = function() {
+    const area = parseFloat(document.getElementById('areaInput').value) || 0;
+    const floors = currentMode === 'build' ? (parseFloat(document.getElementById('floorsInput').value) || 1) : 1;
+    let totalArea = area;
+    let structureText = "";
+
+    if (currentMode === 'build') {
+      const foundationCoef = parseFloat(document.getElementById('foundationSelect').value);
+      const roofCoef = parseFloat(document.getElementById('roofSelect').value);
+      totalArea = (area * floors) + (area * foundationCoef) + (area * roofCoef);
+      structureText = `<div><span>DT sàn:</span> <span>${area}m2 x ${floors} tầng</span></div>
+                       <div><span>Hệ số móng:</span> <span>+${(area * foundationCoef).toFixed(1)} m2</span></div>
+                       <div><span>Hệ số mái:</span> <span>+${(area * roofCoef).toFixed(1)} m2</span></div>`;
+    }
+    const subTotal = totalArea * selectedPrice;
+    const vat = subTotal * 0.08;
+    const finalTotal = subTotal + vat;
+    const formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
+    
+    document.getElementById('finalPrice').innerText = formatter.format(finalTotal);
+    document.getElementById('resultDetails').innerHTML = `
+      ${structureText}
+      <div><span>Tổng DT tính toán:</span> <span>${totalArea.toFixed(1)} m2</span></div>
+      <div><span>Đơn giá:</span> <span>${selectedPrice.toLocaleString('vi-VN')} đ/m2</span></div>
+      <div><span>Tạm tính:</span> <span>${formatter.format(subTotal)}</span></div>
+      <div><span>VAT (8%):</span> <span>${formatter.format(vat)}</span></div>
+      <div style="border:none; color:var(--accent); font-weight:bold; margin-top:10px;"><span>Tổng dự kiến:</span> <span>${formatter.format(finalTotal)}</span></div>
+    `;
+    nextStep(3);
+  }
+
+  document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.innerText = "Đang gửi...";
+    const price = document.getElementById('finalPrice').innerText;
+    const area = document.getElementById('areaInput').value;
+    await addDoc(collection(db, "contacts"), {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      message: `Yêu cầu báo giá từ App. DT: ${area}m2. Dự toán: ${price}`,
+      timestamp: new Date()
+    });
+    alert("Cảm ơn bạn! Yêu cầu đã được gửi."); 
+    e.target.reset(); btn.innerText = "Gửi Yêu Cầu";
+  });
+</script>
+</body>
+</html>

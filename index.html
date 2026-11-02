@@ -35,66 +35,19 @@
 
   /* --- HERO VỚI VIDEO NỀN TỰ CHẠY --- */
   .hero { position: relative; height: 100vh; display: flex; align-items: center; overflow: hidden; }
-  
-  /* Lớp phủ mờ */
-  .hero-overlay { 
-    position: absolute; inset: 0; 
-    background: linear-gradient(to right, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.4) 50%, rgba(8,8,8,0.6) 100%); 
-    z-index: 2; 
-  }
-  
-  /* Khung chứa Video nền */
-  .video-background {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100vw;
-    height: 100vh;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    pointer-events: none; /* Để người dùng không bấm nhầm vào video */
-    overflow: hidden;
-  }
-  
-  .video-background iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    /* Thu phóng video để lấp đầy màn hình, che đi các nút của YouTube */
-    transform: scale(1.3); 
-  }
-
+  .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(8,8,8,0.9) 0%, rgba(8,8,8,0.4) 50%, rgba(8,8,8,0.6) 100%); z-index: 2; }
+  .video-background { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; overflow: hidden; }
+  .video-background iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; transform: scale(1.3); }
   .hero-content { position: relative; z-index: 3; width: 100%; padding-top: 50px; }
-  
   .hero-kicker { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
   .hero-kicker::before { content: ""; width: 40px; height: 1px; background: var(--accent); }
   .hero-kicker span { font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;}
-  
-  .hero h1 { 
-    font-family: var(--font-serif); 
-    font-size: clamp(2.5rem, 4.5vw, 4rem); 
-    font-weight: 400; 
-    line-height: 1.2; 
-    margin-bottom: 30px; 
-    color: #fff;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  }
+  .hero h1 { font-family: var(--font-serif); font-size: clamp(2.5rem, 4.5vw, 4rem); font-weight: 400; line-height: 1.2; margin-bottom: 30px; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
   .hero h1 span { color: var(--accent); font-style: italic;}
   .hero p { max-width: 450px; color: #ddd; font-size: 0.95rem; margin-bottom: 40px; font-weight: 300; line-height: 1.8; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
-  
   .hero-btns { display: flex; align-items: center; gap: 30px; }
-  .btn-primary { 
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 15px 30px; background: var(--accent); color: #000; 
-    font-family: var(--font-main); font-size: 11px; font-weight: 600; 
-    text-transform: uppercase; letter-spacing: 0.1em; 
-    border: 1px solid var(--accent); transition: all 0.3s; cursor: pointer;
-  }
+  .btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; background: var(--accent); color: #000; font-family: var(--font-main); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--accent); transition: all 0.3s; cursor: pointer;}
   .btn-primary:hover { background: #fff; border-color: #fff; }
-  
   .scroll-down { font-size: 11px; color: #ccc; text-transform: uppercase; letter-spacing: 0.15em; display: flex; align-items: center; gap: 10px; cursor: pointer; }
   .scroll-down:hover { color: #fff; }
 
@@ -202,9 +155,7 @@
 
 <!-- HERO VỚI VIDEO YOUTUBE TỰ CHẠY NỀN -->
 <section class="hero" style="border-bottom: none;">
-  
   <div class="video-background">
-    <!-- VIDEO TỰ CHẠY NỀN -->
     <iframe 
       src="https://www.youtube.com/embed/F7wSFTPPsVc?autoplay=1&mute=1&loop=1&playlist=F7wSFTPPsVc&controls=0&modestbranding=1&rel=0&playsinline=1&showinfo=0" 
       frameborder="0" 
@@ -212,18 +163,13 @@
       allowfullscreen>
     </iframe>
   </div>
-  
   <div class="hero-overlay"></div>
-  
   <div class="wrap hero-content">
     <div class="hero-kicker">
       <span>HUY HOÀNG / QUY NHƠN</span>
     </div>
-    
     <h1>Không gian sống đẹp<br>nhất là nơi được làm<br><span>riêng cho gia đình bạn</span></h1>
-    
     <p>Chúng tôi không bắt đầu bằng những bản vẽ khô khan, mà bắt đầu bằng việc lắng nghe cách bạn muốn sống trong không gian đó.</p>
-    
     <div class="hero-btns">
       <a href="bao-gia.html" class="btn-primary">TƯ VẤN NGAY <i class="fas fa-arrow-right"></i></a>
       <a href="#ve-chung-toi" class="scroll-down">CUỘN XUỐNG <i class="fas fa-arrow-down" style="transform: rotate(90deg);"></i></a>
@@ -231,7 +177,6 @@
   </div>
 </section>
 
-<!-- STATS SECTION -->
 <div class="stats-section">
   <div class="wrap stats-grid">
     <div class="stat-item"><h3>10</h3><p>Năm Kinh Nghiệm</p></div>
