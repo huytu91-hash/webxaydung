@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HUY HOÀNG tư vấn thiết kế và thi công nhà ở tại Quy Nhơn, Gia Lai. Xem công trình thực tế và nhận dự toán xây dựng.">
+<meta name="theme-color" content="#121212">
 <title>HUY HOÀNG – Xây Dựng Tương Lai</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -205,9 +207,9 @@
 <body>
 
 <header>
-  <div class="brand-logo" onclick="showPage('home')">
+  <button type="button" class="brand-logo" onclick="showPage('home')" aria-label="Về trang chủ" style="background:none;border:0;padding:0;">
     <img src="logo.png" alt="HUY HOÀNG">
-  </div>
+  </button>
   <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
   <div class="nav-links" id="navLinks">
     <a href="#" onclick="showPage('home')">Trang chủ</a>
@@ -219,8 +221,8 @@
 <div class="floating-bottom">
   <div class="contact-group">
     <a href="tel:0944437238" class="btn-phone" title="Gọi ngay"><i class="fas fa-phone-alt"></i></a>
-    <a href="https://zalo.me/0944437238" target="_blank" class="btn-zalo" title="Chat Zalo"><i class="fas fa-comment-dots"></i></a>
-    <a href="https://www.facebook.com/profile.php?id=61594158232252" target="_blank" class="btn-fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://zalo.me/0944437238" target="_blank" rel="noopener noreferrer" class="btn-zalo" title="Chat Zalo"><i class="fas fa-comment-dots"></i></a>
+    <a href="https://www.facebook.com/profile.php?id=61594158232252" target="_blank" rel="noopener noreferrer" class="btn-fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
   </div>
 </div>
 
@@ -391,7 +393,7 @@
             <small>Pháp luật</small>
             <h4>Cập nhật Luật Xây dựng mới nhất 2026</h4>
             <p>Những thay đổi quan trọng về giấy phép xây dựng và quy hoạch mà gia chủ cần nắm rõ trước khi khởi công.</p>
-            <a href="https://thuvienphapluat.vn" target="_blank">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+            <a href="https://thuvienphapluat.vn" target="_blank" rel="noopener noreferrer">Đọc thêm <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
         <div class="blog-card">
@@ -402,7 +404,7 @@
             <small>Kinh nghiệm</small>
             <h4>5 sai lầm khi xây nhà phố lần đầu</h4>
             <p>Tổng hợp những sai lầm phổ biến về thiết kế công năng và ngân sách mà nhiều gia chủ thường gặp phải.</p>
-            <a href="https://vnexpress.net" target="_blank">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+            <a href="https://vnexpress.net" target="_blank" rel="noopener noreferrer">Đọc thêm <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
         <div class="blog-card">
@@ -413,7 +415,7 @@
             <small>Vật liệu</small>
             <h4>Chọn vật liệu hoàn thiện bền vững</h4>
             <p>Bí quyết chọn gạch, sơn và đá ốp lát phù hợp với khí hậu miền Trung, đảm bảo độ bền và thẩm mỹ.</p>
-            <a href="https://kientrucvietnam.org.vn" target="_blank">Đọc thêm <i class="fas fa-arrow-right"></i></a>
+            <a href="https://kientrucvietnam.org.vn" target="_blank" rel="noopener noreferrer">Đọc thêm <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
       </div>
@@ -435,7 +437,7 @@
         <div class="contact-form reveal delay-1">
           <form id="contactForm">
             <div class="form-group"><label>Họ và tên *</label><input type="text" id="cname" required placeholder="Nhập tên của bạn"></div>
-            <div class="form-group"><label>Số điện thoại *</label><input type="tel" id="cphone" required placeholder="Nhập số điện thoại"></div>
+            <div class="form-group"><label>Số điện thoại *</label><input type="tel" id="cphone" required inputmode="tel" autocomplete="tel" pattern="[0-9+(). -]{9,15}" title="Nhập số điện thoại hợp lệ" placeholder="Nhập số điện thoại"></div>
             <div class="form-group"><label>Nhu cầu của bạn</label><textarea id="cmessage" rows="4" placeholder="Ví dụ: Tôi cần xây nhà phố 3 tầng..."></textarea></div>
             <button type="submit" class="submit-btn" id="csubmitBtn">Gửi Yêu Cầu</button>
           </form>
@@ -461,8 +463,8 @@
 
       <div id="calc-step-1">
         <h3 style="font-family:var(--font-serif); font-size:1.3rem; font-weight:600; margin-bottom:18px;">Bắt đầu từ mặt bằng</h3>
-        <div class="form-group"><label>Diện tích sàn (m2)</label><input type="number" id="areaInput" value="100"></div>
-        <div class="form-group" id="floorsGroup" style="display:none;"><label>Số tầng</label><input type="number" id="floorsInput" value="1"></div>
+        <div class="form-group"><label>Diện tích sàn (m2)</label><input type="number" id="areaInput" value="100" min="1" max="10000" step="1" required></div>
+        <div class="form-group" id="floorsGroup" style="display:none;"><label>Số tầng</label><input type="number" id="floorsInput" value="1" min="1" max="10" step="1" required></div>
         <button onclick="calcNextStep(2)" style="margin-top:15px; padding:14px 28px; background:var(--accent); border:none; font-weight:600; cursor:pointer; text-transform:uppercase; font-size:11px; letter-spacing:0.15em;">Tiếp tục</button>
       </div>
 
@@ -639,17 +641,36 @@
   }
 
   window.calcNextStep = function(step) {
+    if (step === 2) {
+      const area = Number(document.getElementById('areaInput').value);
+      const floors = Number(document.getElementById('floorsInput').value);
+      if (!Number.isFinite(area) || area < 1 || area > 10000) {
+        alert('Vui lòng nhập diện tích từ 1 đến 10.000 m².');
+        document.getElementById('areaInput').focus();
+        return;
+      }
+      if (currentMode === 'build' && (!Number.isInteger(floors) || floors < 1 || floors > 10)) {
+        alert('Vui lòng nhập số tầng từ 1 đến 10.');
+        document.getElementById('floorsInput').focus();
+        return;
+      }
+    }
     document.getElementById('calc-step-1').style.display = step === 1 ? 'block' : 'none';
     document.getElementById('calc-step-2').style.display = step === 2 ? 'block' : 'none';
     document.getElementById('calc-step-3').style.display = step === 3 ? 'block' : 'none';
   }
 
   window.calcResult = function() {
-    const area = parseFloat(document.getElementById('areaInput').value) || 0;
-    const floors = currentMode === 'build' ? (parseFloat(document.getElementById('floorsInput').value) || 1) : 1;
+    const area = Number(document.getElementById('areaInput').value);
+    const floors = currentMode === 'build' ? Number(document.getElementById('floorsInput').value) : 1;
+    if (!Number.isFinite(area) || area < 1 || area > 10000 || !Number.isFinite(floors) || floors < 1 || floors > 10) {
+      alert('Vui lòng kiểm tra lại diện tích và số tầng.');
+      calcNextStep(1);
+      return;
+    }
     let totalArea = area;
     if (currentMode === 'build') {
-      totalArea = (area * floors) + (area * 0.3) + (area * 0.5); 
+      totalArea = (area * floors) + (area * 0.3) + (area * 0.5);
     }
     const subTotal = totalArea * selectedPrice;
     const vat = subTotal * 0.08;
@@ -718,13 +739,13 @@
 
   function explainUploadError(error) {
     const code = error && error.code ? error.code : '';
-    if (code === 'storage/unauthorized' || code === 'storage/ unauthenticated') {
+    if (code === 'storage/unauthorized' || code === 'storage/unauthenticated') {
       return 'Firebase Storage đang từ chối tải lên. Cần kiểm tra quy tắc quyền Storage trong Firebase Console.';
     }
     if (code === 'storage/retry-limit-exceeded') {
       return 'Kết nối bị gián đoạn hoặc tải lên quá lâu. Hãy thử lại với ảnh nhỏ hơn hoặc mạng ổn định hơn.';
     }
-    if (code === 'storage/bucket-not-found' || code === 'storage/no-default-bucket') {
+    if (code === 'storage/bucket-not-found' || code === 'storage/no-default-bucket' || code === 'storage/project-not-found') {
       return 'Không tìm thấy Firebase Storage bucket. Hãy kiểm tra cấu hình storageBucket trong Firebase.';
     }
     if (code === 'storage/canceled') return 'Tác vụ tải ảnh đã bị hủy.';
@@ -787,25 +808,86 @@
     });
   }
 
-  async function loadAdminData() {
-    const contactsSnap = await getDocs(collection(db, "contacts"));
-    let htmlC = '';
-    contactsSnap.forEach(d => {
-      const data = d.data();
-      htmlC += `<tr><td>${data.name}</td><td>${data.phone}</td><td>${data.message}</td></tr>`;
-    });
-    const cTable = document.querySelector('#contactsTable tbody');
-    if(cTable) cTable.innerHTML = htmlC || '<tr><td colspan="3" style="color:var(--muted);">Chưa có khách.</td></tr>';
+  function safeImageUrl(value) {
+    try {
+      const url = new URL(String(value || ''), window.location.href);
+      return url.protocol === 'https:' ? url.href : '';
+    } catch (_) {
+      return '';
+    }
+  }
 
-    const q = query(collection(db, "projects"), orderBy("timestamp", "desc"));
-    const projSnap = await getDocs(q);
-    let htmlP = '';
-    projSnap.forEach(d => {
-      const data = d.data();
-      htmlP += `<tr><td><img src="${data.imageUrl}"></td><td>${data.title}</td><td><button onclick="deletePrj('${d.id}')" style="background:none; border:none; color:#ff4d4d; cursor:pointer;">Xóa</button></td></tr>`;
-    });
-    const pTable = document.querySelector('#projectsTable tbody');
-    if(pTable) pTable.innerHTML = htmlP || '<tr><td colspan="3" style="color:var(--muted);">Chưa có dự án.</td></tr>';
+  function addCell(row, value) {
+    const cell = document.createElement('td');
+    cell.textContent = value == null ? '' : String(value);
+    row.appendChild(cell);
+    return cell;
+  }
+
+  async function loadAdminData() {
+    try {
+      const contactsSnap = await getDocs(collection(db, 'contacts'));
+      const cTable = document.querySelector('#contactsTable tbody');
+      if (cTable) {
+        cTable.replaceChildren();
+        if (contactsSnap.empty) {
+          const row = cTable.insertRow();
+          const cell = addCell(row, 'Chưa có khách.');
+          cell.colSpan = 3;
+        } else {
+          contactsSnap.forEach((item) => {
+            const data = item.data();
+            const row = cTable.insertRow();
+            addCell(row, data.name);
+            addCell(row, data.phone);
+            addCell(row, data.message);
+          });
+        }
+      }
+
+      const projectsQuery = query(collection(db, 'projects'), orderBy('timestamp', 'desc'));
+      const projectsSnap = await getDocs(projectsQuery);
+      const pTable = document.querySelector('#projectsTable tbody');
+      if (pTable) {
+        pTable.replaceChildren();
+        if (projectsSnap.empty) {
+          const row = pTable.insertRow();
+          const cell = addCell(row, 'Chưa có dự án.');
+          cell.colSpan = 3;
+        } else {
+          projectsSnap.forEach((item) => {
+            const data = item.data();
+            const row = pTable.insertRow();
+            const imageCell = row.insertCell();
+            const imageUrl = safeImageUrl(data.imageUrl);
+            if (imageUrl) {
+              const image = document.createElement('img');
+              image.src = imageUrl;
+              image.alt = 'Ảnh ' + String(data.title || 'công trình');
+              image.loading = 'lazy';
+              imageCell.appendChild(image);
+            } else {
+              imageCell.textContent = 'Không có ảnh';
+            }
+            addCell(row, data.title);
+            const actionCell = row.insertCell();
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.textContent = 'Xóa';
+            deleteButton.setAttribute('aria-label', 'Xóa dự án ' + String(data.title || ''));
+            deleteButton.style.cssText = 'background:none;border:none;color:#ff4d4d;cursor:pointer;';
+            deleteButton.addEventListener('click', () => window.deletePrj(item.id));
+            actionCell.appendChild(deleteButton);
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Không tải được dữ liệu quản trị:', error);
+      const cTable = document.querySelector('#contactsTable tbody');
+      const pTable = document.querySelector('#projectsTable tbody');
+      if (cTable) cTable.innerHTML = '<tr><td colspan="3" style="color:#ff8a8a;">Không tải được dữ liệu khách hàng. Kiểm tra kết nối và quyền Firestore.</td></tr>';
+      if (pTable) pTable.innerHTML = '<tr><td colspan="3" style="color:#ff8a8a;">Không tải được dự án. Kiểm tra kết nối và quyền Firestore.</td></tr>';
+    }
   }
 
   window.deletePrj = async function(id) {
@@ -819,19 +901,55 @@
   async function loadProjectsOnHome() {
     const tkBox = document.getElementById('thiet-ke');
     const tcBox = document.getElementById('thi-cong');
-    if(!tkBox || !tcBox) return;
-    tkBox.innerHTML = ''; tcBox.innerHTML = '';
-    const q = query(collection(db, "projects"), orderBy("timestamp", "desc"));
-    const snapshot = await getDocs(q);
-    let hasTK = false, hasTC = false;
-    snapshot.forEach((doc) => {
-      const data = doc.data();
-      const html = `<div class="project-item"><img src="${data.imageUrl}"><div class="project-info"><h4>${data.title}</h4><p>${data.description}</p></div></div>`;
-      if (data.type === 'thiet-ke') { tkBox.innerHTML += html; hasTK = true; }
-      if (data.type === 'thi-cong') { tcBox.innerHTML += html; hasTC = true; }
-    });
-    if (!hasTK) tkBox.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--muted);">Chưa có dữ liệu.</div>';
-    if (!hasTC) tcBox.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color: var(--muted);">Chưa có dữ liệu.</div>';
+    if (!tkBox || !tcBox) return;
+
+    tkBox.textContent = 'Đang tải dữ liệu...';
+    tcBox.textContent = 'Đang tải dữ liệu...';
+    try {
+      const projectsQuery = query(collection(db, 'projects'), orderBy('timestamp', 'desc'));
+      const snapshot = await getDocs(projectsQuery);
+      tkBox.replaceChildren();
+      tcBox.replaceChildren();
+      let hasDesign = false;
+      let hasBuild = false;
+
+      snapshot.forEach((item) => {
+        const data = item.data();
+        const target = data.type === 'thiet-ke' ? tkBox : data.type === 'thi-cong' ? tcBox : null;
+        if (!target) return;
+
+        const card = document.createElement('div');
+        card.className = 'project-item';
+        const imageUrl = safeImageUrl(data.imageUrl);
+        if (imageUrl) {
+          const image = document.createElement('img');
+          image.src = imageUrl;
+          image.alt = String(data.title || 'Công trình HUY HOÀNG');
+          image.loading = 'lazy';
+          image.decoding = 'async';
+          card.appendChild(image);
+        }
+        const info = document.createElement('div');
+        info.className = 'project-info';
+        const title = document.createElement('h4');
+        title.textContent = data.title == null ? '' : String(data.title);
+        const description = document.createElement('p');
+        description.textContent = data.description == null ? '' : String(data.description);
+        info.append(title, description);
+        card.appendChild(info);
+        target.appendChild(card);
+
+        if (target === tkBox) hasDesign = true;
+        if (target === tcBox) hasBuild = true;
+      });
+
+      if (!hasDesign) tkBox.textContent = 'Chưa có dữ liệu.';
+      if (!hasBuild) tcBox.textContent = 'Chưa có dữ liệu.';
+    } catch (error) {
+      console.error('Không tải được danh sách công trình:', error);
+      tkBox.textContent = 'Không tải được công trình. Kiểm tra kết nối hoặc quyền Firestore.';
+      tcBox.textContent = 'Không tải được công trình. Kiểm tra kết nối hoặc quyền Firestore.';
+    }
   }
   loadProjectsOnHome();
 
