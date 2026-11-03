@@ -496,12 +496,14 @@
 <div id="page-admin" class="page" style="padding-top: 130px; min-height: 100vh;">
   <div class="wrap" style="max-width: 900px;">
     
-    <div id="login-screen" style="text-align: center; margin-top: 40px;">
-      <h2 style="font-family: var(--font-serif); font-size:1.8rem; margin-bottom:20px; font-weight:600;">Trang Quản Trị</h2>
-      <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-        <input type="password" id="admin-pass" placeholder="Mật khẩu..." style="padding:14px; width:260px; background:var(--bg-2); border:1px solid var(--line); color:white;">
-        <button onclick="checkLogin()" style="padding:14px 28px; background:var(--accent); border:none; font-weight:600; cursor:pointer; text-transform:uppercase; font-size:11px; letter-spacing:0.1em;">Vào</button>
-      </div>
+    <div id="login-screen" style="text-align:center;margin-top:40px;">
+      <h2 style="font-family:var(--font-serif);font-size:1.8rem;margin-bottom:12px;font-weight:600;">Trang Quản Trị</h2>
+      <p style="color:var(--muted);margin-bottom:20px;">Đăng nhập an toàn bằng liên kết gửi đến email quản trị.</p>
+      <form id="admin-login-form" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+        <input type="email" id="admin-email" autocomplete="email" required placeholder="Email quản trị" style="padding:14px;width:280px;background:var(--bg-2);border:1px solid var(--line);color:white;">
+        <button type="submit" id="admin-login-btn" style="padding:14px 22px;background:var(--accent);border:none;font-weight:600;cursor:pointer;text-transform:uppercase;font-size:11px;letter-spacing:0.1em;">Gửi liên kết</button>
+      </form>
+      <p id="admin-login-status" role="status" aria-live="polite" style="color:var(--muted);margin-top:14px;"></p>
     </div>
 
     <div id="admin-screen" style="display:none;">
@@ -548,21 +550,10 @@
 </footer>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/+esm";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDKGFdF0Oe3_qyEnjnsNWk5W9K43GvjMrw",
-    authDomain: "huyhoang-web.firebaseapp.com",
-    projectId: "huyhoang-web",
-    storageBucket: "huyhoang-web.firebasestorage.app",
-    messagingSenderId: "894352526276",
-    appId: "1:894352526276:web:93a58b36dbacc0dafef291"
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
+  const supabase = createClient("https://xlczerrsbpzwvygkjdbq.supabase.co", "sb_publishable_kOKg_rBwahMRJk32s4QvuA_i-yuzr_8");
+  const projectBucket = "webx-projects";
 
   window.toggleMobileMenu = function() {
     const nav = document.getElementById('navLinks');
@@ -581,43 +572,43 @@
   }
 
   const contactForm = document.getElementById('contactForm');
-  if(contactForm) {
+  if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('csubmitBtn');
-      btn.innerText = "Đang gửi...";
-      
+      const payload = {
+        name: document.getElementById('cname').value.trim(),
+        phone: document.getElementById('cphone').value.trim(),
+        message: document.getElementById('cmessage').value.trim()
+      };
+      btn.disabled = true;
+      btn.innerText = 'Đang gửi...';
       try {
-        await addDoc(collection(db, "contacts"), {
-          name: document.getElementById('cname').value,
-          phone: document.getElementById('cphone').value,
-          message: document.getElementById('cmessage').value,
-          timestamp: new Date()
-        });
+        const { error } = await supabase.from('webx_contacts').insert(payload);
+        if (error) throw error;
 
-        const templateParams = {
-          name: document.getElementById('cname').value,
-          phone: document.getElementById('cphone').value,
-          message: document.getElementById('cmessage').value
-        };
-
-        emailjs.send('service_eanzsog', 'template_52n0r3a', templateParams)
-          .then(function(response) {
-             alert("Cảm ơn bạn! Yêu cầu đã được gửi thành công.");
-             contactForm.reset();
-             btn.innerText = "Gửi Yêu Cầu";
-          }, function(error) {
-             alert("Lưu hệ thống thành công nhưng lỗi gửi email: " + error.text);
-             btn.innerText = "Gửi Yêu Cầu";
-          });
-
-      } catch(err) {
-        alert("Có lỗi xảy ra, vui lòng thử lại sau.");
-        btn.innerText = "Gửi Yêu Cầu";
+        let emailSent = false;
+        if (window.emailjs && typeof window.emailjs.send === 'function') {
+          try {
+            await window.emailjs.send('service_eanzsog', 'template_52n0r3a', payload);
+            emailSent = true;
+          } catch (emailError) {
+            console.error('Không gửi được thông báo email:', emailError);
+          }
+        }
+        contactForm.reset();
+        alert(emailSent
+          ? 'Cảm ơn bạn! Yêu cầu đã được gửi thành công.'
+          : 'Yêu cầu đã được lưu. Hiện chưa gửi được email thông báo.');
+      } catch (error) {
+        console.error('Không lưu được yêu cầu liên hệ:', error);
+        alert('Chưa gửi được yêu cầu. Vui lòng thử lại hoặc gọi hotline.');
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Gửi Yêu Cầu';
       }
     });
   }
-
   let currentMode = 'design';
   let selectedPrice = 79000;
 
@@ -680,19 +671,83 @@
     calcNextStep(3);
   }
 
-  window.checkLogin = function() {
-    if (document.getElementById('admin-pass').value === "huyhoang123") {
+  const loginForm = document.getElementById('admin-login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      window.checkLogin();
+    });
+  }
+
+  async function activateAdminSession(session) {
+    const status = document.getElementById('admin-login-status');
+    if (!session) {
+      document.getElementById('login-screen').style.display = 'block';
+      document.getElementById('admin-screen').style.display = 'none';
+      return;
+    }
+    try {
+      const { data, error } = await supabase.rpc('webx_is_admin');
+      if (error || data !== true) {
+        await supabase.auth.signOut();
+        document.getElementById('login-screen').style.display = 'block';
+        document.getElementById('admin-screen').style.display = 'none';
+        if (status) status.textContent = 'Email này chưa được cấp quyền quản trị.';
+        return;
+      }
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-screen').style.display = 'block';
-      loadAdminData();
-    } else { alert("Sai mật khẩu!"); }
+      if (status) status.textContent = '';
+      await loadAdminData();
+    } catch (error) {
+      console.error('Không kiểm tra được quyền quản trị:', error);
+      await supabase.auth.signOut();
+      document.getElementById('login-screen').style.display = 'block';
+      document.getElementById('admin-screen').style.display = 'none';
+      if (status) status.textContent = 'Không xác minh được quyền quản trị. Vui lòng thử lại.';
+    }
   }
-  
-  window.logoutAdmin = function() {
+
+  window.checkLogin = async function() {
+    const emailInput = document.getElementById('admin-email');
+    const button = document.getElementById('admin-login-btn');
+    const status = document.getElementById('admin-login-status');
+    const email = emailInput.value.trim().toLowerCase();
+    if (!email) return;
+    button.disabled = true;
+    button.textContent = 'Đang gửi...';
+    status.textContent = '';
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: true,
+          emailRedirectTo: window.location.origin
+        }
+      });
+      if (error) throw error;
+      status.textContent = 'Nếu email hợp lệ, liên kết đăng nhập sẽ được gửi. Hãy kiểm tra cả thư mục Spam.';
+    } catch (error) {
+      console.error('Không gửi được liên kết đăng nhập:', error);
+      status.textContent = 'Chưa gửi được liên kết. Kiểm tra cấu hình URL đăng nhập và dịch vụ email của Supabase.';
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Gửi liên kết';
+    }
+  }
+
+  window.logoutAdmin = async function() {
+    await supabase.auth.signOut();
     document.getElementById('login-screen').style.display = 'block';
     document.getElementById('admin-screen').style.display = 'none';
   }
 
+  supabase.auth.onAuthStateChange((_event, session) => {
+    setTimeout(() => activateAdminSession(session), 0);
+  });
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) activateAdminSession(session);
+  });
   function compressImage(file, maxWidth = 1600, quality = 0.8) {
     return new Promise((resolve, reject) => {
       if (!file || !file.type.startsWith('image/')) {
@@ -739,50 +794,55 @@
 
   function explainUploadError(error) {
     const code = error && error.code ? error.code : '';
-    if (code === 'storage/unauthorized' || code === 'storage/unauthenticated') {
-      return 'Firebase Storage đang từ chối tải lên. Cần kiểm tra quy tắc quyền Storage trong Firebase Console.';
+    const message = error && error.message ? error.message : '';
+    if (code === 'storage/unauthorized' || code === '42501' || /row-level security/i.test(message)) {
+      return 'Tài khoản chưa được cấp quyền quản trị hoặc chính sách bảo mật đang từ chối thao tác.';
     }
-    if (code === 'storage/retry-limit-exceeded') {
-      return 'Kết nối bị gián đoạn hoặc tải lên quá lâu. Hãy thử lại với ảnh nhỏ hơn hoặc mạng ổn định hơn.';
+    if (/failed to fetch|network/i.test(message)) {
+      return 'Kết nối bị gián đoạn. Hãy kiểm tra mạng rồi thử lại.';
     }
-    if (code === 'storage/bucket-not-found' || code === 'storage/no-default-bucket' || code === 'storage/project-not-found') {
-      return 'Không tìm thấy Firebase Storage bucket. Hãy kiểm tra cấu hình storageBucket trong Firebase.';
-    }
-    if (code === 'storage/canceled') return 'Tác vụ tải ảnh đã bị hủy.';
-    return (error && error.message) || 'Đã xảy ra lỗi không xác định.';
+    return message || 'Đã xảy ra lỗi không xác định.';
   }
 
   const addPrjForm = document.getElementById('addPrjForm');
-  if(addPrjForm) {
-    addPrjForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = document.getElementById('btnAddPrj');
+  if (addPrjForm) {
+    addPrjForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = document.getElementById('btnAddPrj');
       const files = Array.from(document.getElementById('prjImg').files || []);
-      if (files.length === 0) return alert('Vui lòng chọn ít nhất 1 ảnh!');
+      if (!files.length) {
+        alert('Vui lòng chọn ít nhất 1 ảnh!');
+        return;
+      }
 
-      btn.disabled = true;
+      button.disabled = true;
       const title = document.getElementById('prjTitle').value.trim();
-      const desc = document.getElementById('prjDesc').value.trim();
+      const description = document.getElementById('prjDesc').value.trim();
       const type = document.getElementById('prjType').value;
       let uploaded = 0;
 
       try {
         for (let i = 0; i < files.length; i++) {
-          btn.innerText = `Đang xử lý ảnh (${i + 1}/${files.length})...`;
+          button.innerText = `Đang xử lý ảnh (${i + 1}/${files.length})...`;
           const compressedFile = await compressImage(files[i]);
+          const imagePath = `projects/${crypto.randomUUID()}.jpg`;
 
-          btn.innerText = `Đang tải ảnh lên (${i + 1}/${files.length})...`;
-          const storageRef = ref(storage, 'projects/' + Date.now() + '_' + i + '_' + compressedFile.name);
-          const uploadResult = await uploadBytes(storageRef, compressedFile, { contentType: 'image/jpeg' });
-          const downloadURL = await getDownloadURL(uploadResult.ref);
+          button.innerText = `Đang tải ảnh lên (${i + 1}/${files.length})...`;
+          const { error: uploadError } = await supabase.storage
+            .from(projectBucket)
+            .upload(imagePath, compressedFile, { contentType: 'image/jpeg', upsert: false });
+          if (uploadError) throw uploadError;
 
-          await addDoc(collection(db, 'projects'), {
+          const { error: insertError } = await supabase.from('webx_projects').insert({
             title: title + (files.length > 1 ? ` (${i + 1})` : ''),
-            description: desc,
-            type: type,
-            imageUrl: downloadURL,
-            timestamp: new Date()
+            description,
+            type,
+            image_path: imagePath
           });
+          if (insertError) {
+            await supabase.storage.from(projectBucket).remove([imagePath]);
+            throw insertError;
+          }
           uploaded++;
         }
 
@@ -798,23 +858,14 @@
           : `Không tải được ảnh: ${detail}`);
         if (uploaded) {
           addPrjForm.reset();
-          loadAdminData();
-          loadProjectsOnHome();
+          await loadAdminData();
+          await loadProjectsOnHome();
         }
       } finally {
-        btn.innerText = 'Tải Lên Dự Án';
-        btn.disabled = false;
+        button.innerText = 'Tải Lên Dự Án';
+        button.disabled = false;
       }
     });
-  }
-
-  function safeImageUrl(value) {
-    try {
-      const url = new URL(String(value || ''), window.location.href);
-      return url.protocol === 'https:' ? url.href : '';
-    } catch (_) {
-      return '';
-    }
   }
 
   function addCell(row, value) {
@@ -824,107 +875,123 @@
     return cell;
   }
 
-  async function loadAdminData() {
-    try {
-      const contactsSnap = await getDocs(collection(db, 'contacts'));
-      const cTable = document.querySelector('#contactsTable tbody');
-      if (cTable) {
-        cTable.replaceChildren();
-        if (contactsSnap.empty) {
-          const row = cTable.insertRow();
-          const cell = addCell(row, 'Chưa có khách.');
-          cell.colSpan = 3;
-        } else {
-          contactsSnap.forEach((item) => {
-            const data = item.data();
-            const row = cTable.insertRow();
-            addCell(row, data.name);
-            addCell(row, data.phone);
-            addCell(row, data.message);
-          });
-        }
-      }
+  function addEmptyRow(tableBody, message, columnCount) {
+    const row = tableBody.insertRow();
+    const cell = addCell(row, message);
+    cell.colSpan = columnCount;
+  }
 
-      const projectsQuery = query(collection(db, 'projects'), orderBy('timestamp', 'desc'));
-      const projectsSnap = await getDocs(projectsQuery);
-      const pTable = document.querySelector('#projectsTable tbody');
-      if (pTable) {
-        pTable.replaceChildren();
-        if (projectsSnap.empty) {
-          const row = pTable.insertRow();
-          const cell = addCell(row, 'Chưa có dự án.');
-          cell.colSpan = 3;
-        } else {
-          projectsSnap.forEach((item) => {
-            const data = item.data();
-            const row = pTable.insertRow();
-            const imageCell = row.insertCell();
-            const imageUrl = safeImageUrl(data.imageUrl);
-            if (imageUrl) {
-              const image = document.createElement('img');
-              image.src = imageUrl;
-              image.alt = 'Ảnh ' + String(data.title || 'công trình');
-              image.loading = 'lazy';
-              imageCell.appendChild(image);
-            } else {
-              imageCell.textContent = 'Không có ảnh';
-            }
-            addCell(row, data.title);
-            const actionCell = row.insertCell();
-            const deleteButton = document.createElement('button');
-            deleteButton.type = 'button';
-            deleteButton.textContent = 'Xóa';
-            deleteButton.setAttribute('aria-label', 'Xóa dự án ' + String(data.title || ''));
-            deleteButton.style.cssText = 'background:none;border:none;color:#ff4d4d;cursor:pointer;';
-            deleteButton.addEventListener('click', () => window.deletePrj(item.id));
-            actionCell.appendChild(deleteButton);
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Không tải được dữ liệu quản trị:', error);
-      const cTable = document.querySelector('#contactsTable tbody');
-      const pTable = document.querySelector('#projectsTable tbody');
-      if (cTable) cTable.innerHTML = '<tr><td colspan="3" style="color:#ff8a8a;">Không tải được dữ liệu khách hàng. Kiểm tra kết nối và quyền Firestore.</td></tr>';
-      if (pTable) pTable.innerHTML = '<tr><td colspan="3" style="color:#ff8a8a;">Không tải được dự án. Kiểm tra kết nối và quyền Firestore.</td></tr>';
+  function projectImageUrl(imagePath) {
+    if (!imagePath) return '';
+    const { data } = supabase.storage.from(projectBucket).getPublicUrl(imagePath);
+    try {
+      const url = new URL(data.publicUrl);
+      return url.protocol === 'https:' ? url.href : '';
+    } catch (_) {
+      return '';
     }
   }
 
-  window.deletePrj = async function(id) {
-    if (confirm("Xóa dự án này?")) {
-      await deleteDoc(doc(db, "projects", id));
-      loadAdminData();
-      loadProjectsOnHome();
+  async function loadAdminData() {
+    const [contactsResult, projectsResult] = await Promise.all([
+      supabase.from('webx_contacts').select('id,name,phone,message,created_at').order('created_at', { ascending: false }),
+      supabase.from('webx_projects').select('id,title,image_path').order('created_at', { ascending: false })
+    ]);
+    if (contactsResult.error) throw contactsResult.error;
+    if (projectsResult.error) throw projectsResult.error;
+
+    const contactBody = document.querySelector('#contactsTable tbody');
+    if (contactBody) {
+      contactBody.replaceChildren();
+      if (!contactsResult.data.length) addEmptyRow(contactBody, 'Chưa có khách.', 3);
+      contactsResult.data.forEach((contact) => {
+        const row = contactBody.insertRow();
+        addCell(row, contact.name);
+        addCell(row, contact.phone);
+        addCell(row, contact.message);
+      });
     }
+
+    const projectsBody = document.querySelector('#projectsTable tbody');
+    if (projectsBody) {
+      projectsBody.replaceChildren();
+      if (!projectsResult.data.length) addEmptyRow(projectsBody, 'Chưa có dự án.', 3);
+      projectsResult.data.forEach((project) => {
+        const row = projectsBody.insertRow();
+        const imageCell = row.insertCell();
+        const src = projectImageUrl(project.image_path);
+        if (src) {
+          const image = document.createElement('img');
+          image.src = src;
+          image.alt = 'Ảnh ' + String(project.title || 'công trình');
+          image.loading = 'lazy';
+          imageCell.appendChild(image);
+        } else {
+          imageCell.textContent = 'Không có ảnh';
+        }
+        addCell(row, project.title);
+        const actionCell = row.insertCell();
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Xóa';
+        deleteButton.setAttribute('aria-label', 'Xóa dự án ' + String(project.title || ''));
+        deleteButton.style.cssText = 'background:none;border:none;color:#ff4d4d;cursor:pointer;';
+        deleteButton.addEventListener('click', () => window.deletePrj(project.id, project.image_path));
+        actionCell.appendChild(deleteButton);
+      });
+    }
+  }
+
+  window.deletePrj = async function(id, imagePath) {
+    if (!confirm('Xóa dự án này?')) return;
+    const { error: rowError } = await supabase.from('webx_projects').delete().eq('id', id);
+    if (rowError) {
+      alert('Không xóa được dự án: ' + explainUploadError(rowError));
+      return;
+    }
+
+    let imageWarning = '';
+    if (imagePath) {
+      const { error: imageError } = await supabase.storage.from(projectBucket).remove([imagePath]);
+      if (imageError) {
+        console.error('Không xóa được ảnh khỏi Storage:', imageError);
+        imageWarning = ' Thông tin dự án đã xóa nhưng ảnh lưu trữ chưa được dọn.';
+      }
+    }
+    await loadAdminData();
+    await loadProjectsOnHome();
+    if (imageWarning) alert(imageWarning);
   }
 
   async function loadProjectsOnHome() {
-    const tkBox = document.getElementById('thiet-ke');
-    const tcBox = document.getElementById('thi-cong');
-    if (!tkBox || !tcBox) return;
+    const designBox = document.getElementById('thiet-ke');
+    const buildBox = document.getElementById('thi-cong');
+    if (!designBox || !buildBox) return;
 
-    tkBox.textContent = 'Đang tải dữ liệu...';
-    tcBox.textContent = 'Đang tải dữ liệu...';
+    designBox.textContent = 'Đang tải dữ liệu...';
+    buildBox.textContent = 'Đang tải dữ liệu...';
     try {
-      const projectsQuery = query(collection(db, 'projects'), orderBy('timestamp', 'desc'));
-      const snapshot = await getDocs(projectsQuery);
-      tkBox.replaceChildren();
-      tcBox.replaceChildren();
+      const { data, error } = await supabase
+        .from('webx_projects')
+        .select('id,title,description,type,image_path')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+
+      designBox.replaceChildren();
+      buildBox.replaceChildren();
       let hasDesign = false;
       let hasBuild = false;
-
-      snapshot.forEach((item) => {
-        const data = item.data();
-        const target = data.type === 'thiet-ke' ? tkBox : data.type === 'thi-cong' ? tcBox : null;
+      data.forEach((project) => {
+        const target = project.type === 'thiet-ke' ? designBox : project.type === 'thi-cong' ? buildBox : null;
         if (!target) return;
 
         const card = document.createElement('div');
         card.className = 'project-item';
-        const imageUrl = safeImageUrl(data.imageUrl);
-        if (imageUrl) {
+        const src = projectImageUrl(project.image_path);
+        if (src) {
           const image = document.createElement('img');
-          image.src = imageUrl;
-          image.alt = String(data.title || 'Công trình HUY HOÀNG');
+          image.src = src;
+          image.alt = String(project.title || 'Công trình HUY HOÀNG');
           image.loading = 'lazy';
           image.decoding = 'async';
           card.appendChild(image);
@@ -932,27 +999,26 @@
         const info = document.createElement('div');
         info.className = 'project-info';
         const title = document.createElement('h4');
-        title.textContent = data.title == null ? '' : String(data.title);
+        title.textContent = project.title == null ? '' : String(project.title);
         const description = document.createElement('p');
-        description.textContent = data.description == null ? '' : String(data.description);
+        description.textContent = project.description == null ? '' : String(project.description);
         info.append(title, description);
         card.appendChild(info);
         target.appendChild(card);
 
-        if (target === tkBox) hasDesign = true;
-        if (target === tcBox) hasBuild = true;
+        if (target === designBox) hasDesign = true;
+        if (target === buildBox) hasBuild = true;
       });
 
-      if (!hasDesign) tkBox.textContent = 'Chưa có dữ liệu.';
-      if (!hasBuild) tcBox.textContent = 'Chưa có dữ liệu.';
+      if (!hasDesign) designBox.textContent = 'Chưa có dữ liệu.';
+      if (!hasBuild) buildBox.textContent = 'Chưa có dữ liệu.';
     } catch (error) {
       console.error('Không tải được danh sách công trình:', error);
-      tkBox.textContent = 'Không tải được công trình. Kiểm tra kết nối hoặc quyền Firestore.';
-      tcBox.textContent = 'Không tải được công trình. Kiểm tra kết nối hoặc quyền Firestore.';
+      designBox.textContent = 'Không tải được công trình. Kiểm tra kết nối rồi thử lại.';
+      buildBox.textContent = 'Không tải được công trình. Kiểm tra kết nối rồi thử lại.';
     }
   }
   loadProjectsOnHome();
-
   window.openTab = function(tabName, btn) {
     document.querySelectorAll('.project-content').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
