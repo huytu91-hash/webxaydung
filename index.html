@@ -1080,77 +1080,7 @@
     }
   });
 
-đã xóa nhưng ảnh lưu trữ chưa được dọn.';
-      }
-    }
-    await loadAdminData();
-    await loadProjectsOnHome();
-    if (imageWarning) alert(imageWarning);
-  }
-
-  async function loadProjectsOnHome() {
-    const designBox = document.getElementById('thiet-ke');
-    const buildBox = document.getElementById('thi-cong');
-    if (!designBox || !buildBox) return;
-
-    designBox.textContent = 'Đang tải dữ liệu...';
-    buildBox.textContent = 'Đang tải dữ liệu...';
-    try {
-      const { data, error } = await supabase
-        .from('webx_projects')
-        .select('id,title,description,type,image_path')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-
-      designBox.replaceChildren();
-      buildBox.replaceChildren();
-      let hasDesign = false;
-      let hasBuild = false;
-      data.forEach((project) => {
-        const target = project.type === 'thiet-ke' ? designBox : project.type === 'thi-cong' ? buildBox : null;
-        if (!target) return;
-
-        const card = document.createElement('div');
-        card.className = 'project-item';
-        const src = projectImageUrl(project.image_path);
-        if (src) {
-          const image = document.createElement('img');
-          image.src = src;
-          image.alt = String(project.title || 'Công trình HUY HOÀNG');
-          image.loading = 'lazy';
-          image.decoding = 'async';
-          card.appendChild(image);
-        }
-        const info = document.createElement('div');
-        info.className = 'project-info';
-        const title = document.createElement('h4');
-        title.textContent = project.title == null ? '' : String(project.title);
-        const description = document.createElement('p');
-        description.textContent = project.description == null ? '' : String(project.description);
-        info.append(title, description);
-        card.appendChild(info);
-        target.appendChild(card);
-
-        if (target === designBox) hasDesign = true;
-        if (target === buildBox) hasBuild = true;
-      });
-
-      if (!hasDesign) designBox.textContent = 'Chưa có dữ liệu.';
-      if (!hasBuild) buildBox.textContent = 'Chưa có dữ liệu.';
-    } catch (error) {
-      console.error('Không tải được danh sách công trình:', error);
-      designBox.textContent = 'Không tải được công trình. Kiểm tra kết nối rồi thử lại.';
-      buildBox.textContent = 'Không tải được công trình. Kiểm tra kết nối rồi thử lại.';
-    }
-  }
   loadProjectsOnHome();
-  window.openTab = function(tabName, btn) {
-    document.querySelectorAll('.project-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-    const target = document.getElementById(tabName);
-    if(target) target.classList.add('active');
-    if(btn) btn.classList.add('active');
-  }
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
