@@ -161,11 +161,45 @@
   .page { display: none; }
   .page.active { display: block; }
   
-  .calc-container { background: var(--bg-2); padding: 35px; border: 1px solid var(--line); border-radius: 4px; }
-  .package-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-  .package-card { background: var(--bg); padding: 18px; border: 1px solid var(--line); text-align: center; cursor: pointer; transition: all 0.3s; border-radius: 4px; }
-  .package-card.selected, .package-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .package-price { color: var(--accent); font-weight: 600; margin-top: 8px; font-size: 0.95rem;}
+  .calc-container { position:relative; overflow:hidden; background:radial-gradient(circle at 95% 0%,rgba(90,150,105,.13),transparent 34%),linear-gradient(145deg,#1c211e,#151715 70%); padding:clamp(22px,4vw,42px); border:1px solid rgba(145,190,150,.2); border-radius:18px; box-shadow:0 28px 80px rgba(0,0,0,.3); }
+  .calc-container:before { content:""; position:absolute; inset:0 auto 0 0; width:3px; background:linear-gradient(#9cc9a0,#527d5c,transparent); }
+  .calc-eyebrow { display:inline-flex; align-items:center; gap:8px; color:#a9d0ad; font-size:10px; letter-spacing:.19em; text-transform:uppercase; font-weight:700; margin-bottom:12px; }
+  .calc-stepper { display:grid; grid-template-columns:repeat(3,1fr); margin:28px 0 32px; border-bottom:1px solid #343a35; }
+  .calc-step { padding:0 8px 15px; color:#777e78; font-size:11px; letter-spacing:.08em; text-transform:uppercase; border-bottom:2px solid transparent; }
+  .calc-step.active { color:#b4d9b8; border-color:#85b38a; }
+  .calc-step b { display:inline-grid; place-items:center; width:25px; height:25px; border-radius:50%; border:1px solid currentColor; margin-right:8px; font-size:10px; }
+  .calc-panel-title { font-family:var(--font-serif); font-size:clamp(1.3rem,2.5vw,1.8rem); margin-bottom:8px; }
+  .calc-help { color:#a6ada7; font-size:.88rem; margin-bottom:24px; }
+  .calc-field-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+  .calc-field { margin:0 0 18px; }
+  .calc-field label { display:block; font-size:10px; color:#aab3ab; margin-bottom:8px; letter-spacing:.13em; text-transform:uppercase; font-weight:700; }
+  .calc-field input,.calc-field select { width:100%; min-height:52px; background:#111512; border:1px solid #343c35; border-radius:10px; color:#f4f1ea; padding:12px 14px; font:500 .95rem var(--font-main); outline:none; }
+  .calc-field input:focus,.calc-field select:focus { border-color:#8cba91; box-shadow:0 0 0 3px rgba(140,186,145,.13); }
+  .calc-choice-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:22px 0; }
+  .calc-choice { position:relative; text-align:left; width:100%; min-height:140px; padding:18px 16px; border:1px solid #343c35; border-radius:12px; background:rgba(12,16,13,.56); color:var(--fg); cursor:pointer; transition:.2s ease; }
+  .calc-choice:hover { border-color:#7da984; transform:translateY(-2px); }
+  .calc-choice.selected { border-color:#9dcaa1; background:linear-gradient(150deg,rgba(98,145,103,.23),rgba(17,21,18,.8)); box-shadow:inset 0 0 0 1px rgba(157,202,161,.25); }
+  .calc-choice .choice-tag { display:inline-block; color:#b1d7b5; font-size:9px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:12px; }
+  .calc-choice strong { display:block; font:600 1rem var(--font-serif); margin-bottom:7px; }
+  .calc-choice small { color:#a9b0aa; line-height:1.6; display:block; }
+  .calc-actions { display:flex; justify-content:space-between; gap:12px; margin-top:26px; }
+  .calc-action { min-height:48px; padding:12px 18px; border-radius:7px; cursor:pointer; font:700 10px var(--font-main); letter-spacing:.12em; text-transform:uppercase; }
+  .calc-action.primary { background:#8fbc95; border:1px solid #8fbc95; color:#101710; }
+  .calc-action.secondary { background:transparent; border:1px solid #4a524b; color:#e9eee9; }
+  .calc-estimate { display:grid; grid-template-columns:1fr minmax(240px,.75fr); gap:25px; align-items:start; }
+  .calc-estimate-card { border:1px solid #39443b; border-radius:12px; background:rgba(9,13,10,.62); padding:20px; }
+  .calc-estimate-card h4 { color:#b2d7b6; font-size:10px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:16px; }
+  .calc-line { display:flex; justify-content:space-between; gap:16px; padding:10px 0; border-bottom:1px solid #2c332d; color:#bfc6bf; font-size:.85rem; }
+  .calc-line strong { color:#f4f1ea; text-align:right; }
+  .calc-total { margin-top:16px; display:flex; justify-content:space-between; gap:12px; align-items:end; }
+  .calc-total span { color:#a6b1a7; font-size:10px; letter-spacing:.12em; text-transform:uppercase; }
+  .calc-total strong { color:#a8d2ad; font:600 clamp(1.45rem,3.5vw,2rem) var(--font-serif); text-align:right; }
+  .calc-disclaimer { color:#8f9890; font-size:.78rem; line-height:1.7; margin:18px 0 0; }
+  .calc-cta-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+  .calc-cta { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:46px; padding:11px 15px; border:1px solid #445448; border-radius:7px; color:#eaf1ea; font-size:10px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; background:transparent; }
+  .calc-cta:hover { border-color:#9dcaa1; color:#b6dcb9; }
+  .calc-cta.primary { background:#8fbc95; color:#101710; border-color:#8fbc95; font-weight:700; }
+  @media(max-width:700px) { .calc-choice-grid{grid-template-columns:1fr}.calc-choice{min-height:unset}.calc-estimate{grid-template-columns:1fr}.calc-field-grid{grid-template-columns:1fr}.calc-step{font-size:9px;padding-left:0}.calc-container{padding:22px 18px}.calc-actions{position:sticky;bottom:10px;background:rgba(18,22,19,.96);padding:10px;border-radius:10px;z-index:3}.calc-action{flex:1} }
   
   .admin-card { background: var(--bg-2); padding: 25px; border: 1px solid var(--line); margin-bottom: 25px; border-radius: 4px; }
   .admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
@@ -213,6 +247,24 @@
     
     .floating-bottom { bottom: 15px; right: 15px; }
     .contact-group a { width: 42px; height: 42px; font-size: 18px; }
+  }
+
+  @media print {
+    body { background:#fff !important; color:#171a17 !important; }
+    header, footer, .floating-bottom, #page-home, #page-admin, #project-gallery,
+    #page-pricing .calc-eyebrow, #page-pricing .calc-stepper, #page-pricing .calc-actions,
+    #page-pricing .calc-cta-row, #page-pricing #btn-design, #page-pricing #btn-build,
+    #page-pricing .sec-head > .num { display:none !important; }
+    #page-pricing { display:block !important; position:absolute; inset:0; padding:0 !important; min-height:0 !important; }
+    #page-pricing .wrap { max-width:none !important; padding:0 !important; }
+    #page-pricing .sec-head { display:block !important; margin:0 0 18px !important; text-align:left !important; }
+    #page-pricing .sec-head h2 { font-size:22pt !important; color:#162018 !important; }
+    #page-pricing .calc-container { padding:20px !important; background:#fff !important; color:#111 !important; border:1px solid #cbd3cc !important; box-shadow:none !important; }
+    #page-pricing .calc-estimate-card { background:#fff !important; color:#111 !important; border-color:#cbd3cc !important; break-inside:avoid; }
+    #page-pricing .calc-line, #page-pricing .calc-line strong, #page-pricing .calc-help, #page-pricing .calc-disclaimer, #page-pricing .calc-panel-title { color:#252a26 !important; }
+    #page-pricing .calc-total strong, #page-pricing .calc-eyebrow { color:#285a36 !important; }
+    #page-pricing .calc-estimate { grid-template-columns:1.2fr .8fr !important; }
+    #page-pricing .calc-container > .calc-disclaimer:last-child { color:#444 !important; }
   }
 </style>
 </head>
@@ -476,46 +528,65 @@
 </div>
 
 <!-- PAGE 2: BÁO GIÁ -->
-<div id="page-pricing" class="page" style="padding-top: 130px; min-height: 100vh;">
-  <div class="wrap" style="max-width: 900px;">
-    <div class="sec-head" style="text-align: center; max-width: 100%;">
-      <span class="num">CÔNG CỤ TÍNH GIÁ</span>
-      <h2>Phần mềm báo giá<br><span>thiết kế & xây dựng.</span></h2>
+<div id="page-pricing" class="page" style="padding-top:130px;min-height:100vh;">
+  <div class="wrap" style="max-width:1040px;">
+    <div class="sec-head" style="text-align:center;max-width:100%;">
+      <span class="num">DỰ TOÁN MINH BẠCH · XÂY DỰNG GIA LAI</span>
+      <h2>Tính chi phí công trình<br><span>rõ từng hạng mục.</span></h2>
+      <p style="max-width:650px;margin:14px auto 0;color:var(--muted);">Chọn dịch vụ và nhập quy mô dự kiến. Bảng kết quả sẽ ghi rõ cách tính, đơn giá, VAT, phạm vi và các điều kiện cần xác nhận trước khi ký.</p>
     </div>
-    
-    <div class="calc-container">
-      <div style="display:flex; justify-content:center; gap:15px; margin-bottom:35px; flex-wrap:wrap;">
-        <button id="btn-design" onclick="switchMode('design')" style="padding:12px 22px; background:var(--accent); color:#000; border:none; cursor:pointer; font-weight:600; text-transform:uppercase; font-size:11px; letter-spacing:0.1em;">Báo giá thiết kế</button>
-        <button id="btn-build" onclick="switchMode('build')" style="padding:12px 22px; background:transparent; color:var(--muted); border:1px solid var(--line); cursor:pointer; font-weight:600; text-transform:uppercase; font-size:11px; letter-spacing:0.1em;">Dự toán xây dựng</button>
+    <div class="calc-container" id="quote-calculator">
+      <div class="calc-eyebrow"><i class="fas fa-calculator"></i> CÔNG CỤ DỰ TOÁN SƠ BỘ · 3 BƯỚC</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button id="btn-design" type="button" class="calc-action primary" onclick="switchMode('design')"><i class="fas fa-ruler-combined"></i> Báo giá thiết kế</button>
+        <button id="btn-build" type="button" class="calc-action secondary" onclick="switchMode('build')"><i class="fas fa-hammer"></i> Dự toán thi công</button>
       </div>
-
-      <div id="calc-step-1">
-        <h3 style="font-family:var(--font-serif); font-size:1.3rem; font-weight:600; margin-bottom:18px;">Bắt đầu từ mặt bằng</h3>
-        <div class="form-group"><label>Diện tích sàn (m2)</label><input type="number" id="areaInput" value="100" min="1" max="10000" step="1" required></div>
-        <div class="form-group" id="floorsGroup" style="display:none;"><label>Số tầng</label><input type="number" id="floorsInput" value="1" min="1" max="10" step="1" required></div>
-        <button onclick="calcNextStep(2)" style="margin-top:15px; padding:14px 28px; background:var(--accent); border:none; font-weight:600; cursor:pointer; text-transform:uppercase; font-size:11px; letter-spacing:0.15em;">Tiếp tục</button>
-      </div>
-
-      <div id="calc-step-2" style="display:none;">
-        <h3 style="font-family:var(--font-serif); font-size:1.3rem; font-weight:600; margin-bottom:18px;">Chọn gói dịch vụ</h3>
-        <div id="designPkgs" class="package-grid">
-          <div class="package-card selected" onclick="selectPkg(this, 79000)"><h4 style="font-size:1rem; font-family:var(--font-serif);">Tiết kiệm</h4><div class="package-price">79k/m2</div></div>
-          <div class="package-card" onclick="selectPkg(this, 119000)"><h4 style="font-size:1rem; font-family:var(--font-serif);">Cơ bản</h4><div class="package-price">119k/m2</div></div>
-          <div class="package-card" onclick="selectPkg(this, 179000)"><h4 style="font-size:1rem; font-family:var(--font-serif);">Hoàn thiện</h4><div class="package-price">179k/m2</div></div>
+      <div class="calc-stepper"><div class="calc-step active" id="quote-step-label-1"><b>1</b> Quy mô</div><div class="calc-step" id="quote-step-label-2"><b>2</b> Phạm vi</div><div class="calc-step" id="quote-step-label-3"><b>3</b> Dự toán</div></div>
+      <section id="calc-step-1" style="padding:0;border:0;">
+        <h3 class="calc-panel-title">Thông tin công trình</h3>
+        <p class="calc-help" id="quote-step-help">Nhập diện tích sàn dự kiến để tính gói thiết kế.</p>
+        <div id="design-fields" class="calc-field-grid">
+          <div class="calc-field"><label for="areaInput">Diện tích thiết kế (m²)</label><input type="number" id="areaInput" value="100" min="30" max="10000" step="1"></div>
+          <div class="calc-field"><label>Đơn vị tính</label><input value="Đơn giá theo m² sàn thiết kế" readonly></div>
         </div>
-        <div id="buildPkgs" class="package-grid" style="display:none;">
-          <div class="package-card selected" onclick="selectPkg(this, 3500000)"><h4 style="font-size:1rem; font-family:var(--font-serif);">Phần thô</h4><div class="package-price">3.5tr/m2</div></div>
-          <div class="package-card" onclick="selectPkg(this, 5500000)"><h4 style="font-size:1rem; font-family:var(--font-serif);">Trọn gói cơ bản</h4><div class="package-price">5.5tr/m2</div></div>
-          <div class="package-card" onclick="selectPkg(this, 7000000)"><h4 style="font-size:1rem; font-family:var(--font-serif);">Trọn gói cao cấp</h4><div class="package-price">7tr/m2</div></div>
+        <div id="build-fields" class="calc-field-grid" style="display:none;">
+          <div class="calc-field"><label for="widthInput">Chiều ngang khu đất (m)</label><input type="number" id="widthInput" value="5" min="1" max="100" step="0.1"></div>
+          <div class="calc-field"><label for="lengthInput">Chiều dài khu đất (m)</label><input type="number" id="lengthInput" value="20" min="1" max="200" step="0.1"></div>
+          <div class="calc-field"><label for="floorsInput">Số tầng</label><input type="number" id="floorsInput" value="2" min="1" max="10" step="1"></div>
+          <div class="calc-field"><label for="balconyInput">Chiều sâu ban công (m, nếu có)</label><input type="number" id="balconyInput" value="0" min="0" max="10" step="0.1"></div>
+          <div class="calc-field"><label for="foundationInput">Loại móng tạm tính</label><select id="foundationInput"><option value="don">Móng đơn · hệ số 15%</option><option value="bang">Móng băng · hệ số 30%</option></select></div>
+          <div class="calc-field"><label for="roadInput">Điều kiện tiếp cận</label><select id="roadInput"><option value="normal">Xe tải/ô tô tiếp cận · hệ số cơ sở</option><option value="hem">Hẻm nhỏ · cộng hệ số 15%</option></select></div>
+          <div class="calc-field"><label for="roofInput">Loại mái</label><select id="roofInput"><option value="concrete">Mái bê tông</option><option value="tin">Mái tôn · điều chỉnh theo diện tích sàn</option></select></div>
+          <div class="calc-field"><label for="buildModeInput">Phạm vi thi công</label><select id="buildModeInput" onchange="updateFinishChoices()"><option value="rough">Phần thô</option><option value="turnkey">Trọn gói</option></select></div>
         </div>
-        <button onclick="calcResult()" style="margin-top:25px; padding:14px 28px; background:var(--accent); border:none; font-weight:600; cursor:pointer; text-transform:uppercase; font-size:11px; letter-spacing:0.15em;">Xem kết quả</button>
-      </div>
-
-      <div id="calc-step-3" style="display:none; text-align:center;">
-        <h3 style="font-size:1rem; color:var(--muted); font-weight:400;">Ngân sách dự kiến</h3>
-        <div id="finalPrice" style="font-family:var(--font-serif); font-size:2.5rem; font-weight:600; color:var(--accent); margin:15px 0;">0 VNĐ</div>
-        <button onclick="calcNextStep(1)" style="padding:12px 25px; background:transparent; border:1px solid var(--line); color:#fff; cursor:pointer; text-transform:uppercase; font-size:11px; letter-spacing:0.1em;">Quay lại</button>
-      </div>
+        <div class="calc-actions"><span></span><button class="calc-action primary" type="button" onclick="calcNextStep(2)">Tiếp tục <i class="fas fa-arrow-right"></i></button></div>
+      </section>
+      <section id="calc-step-2" style="display:none;padding:0;border:0;">
+        <h3 class="calc-panel-title">Chọn gói dịch vụ</h3>
+        <p class="calc-help">Đơn giá hiển thị ngay trên mỗi gói. Chọn để xem phạm vi và dự toán tương ứng.</p>
+        <div id="designPkgs" class="calc-choice-grid">
+          <button type="button" class="calc-choice selected" data-price="79000" onclick="selectPkg(this,79000)"><span class="choice-tag">GÓI 01</span><strong>Thiết kế tiết kiệm</strong><small>Mặt bằng công năng 2D và phối cảnh 3D các không gian chính.</small><b class="package-price">79.000 đ/m²</b></button>
+          <button type="button" class="calc-choice" data-price="119000" onclick="selectPkg(this,119000)"><span class="choice-tag">GÓI 02</span><strong>Thiết kế cơ bản</strong><small>Gói tiết kiệm, bản vẽ 2D chi tiết và chỉ định vật liệu cơ bản.</small><b class="package-price">119.000 đ/m²</b></button>
+          <button type="button" class="calc-choice" data-price="179000" onclick="selectPkg(this,179000)"><span class="choice-tag">GÓI 03</span><strong>Thiết kế hoàn thiện</strong><small>Hồ sơ thiết kế chi tiết hơn, gồm phối cảnh và bộ bản vẽ bàn giao.</small><b class="package-price">179.000 đ/m²</b></button>
+        </div>
+        <div id="buildPkgs" class="calc-choice-grid" style="display:none;">
+          <button type="button" class="calc-choice selected" data-price="3500000" onclick="selectPkg(this,3500000)"><span class="choice-tag">GÓI 01</span><strong>Thi công phần thô</strong><small>Đơn giá cơ sở theo diện tích quy đổi; vật tư và ranh giới hạng mục chốt theo phụ lục.</small><b class="package-price">3.500.000 đ/m²</b></button>
+          <button type="button" class="calc-choice" data-price="5500000" onclick="selectPkg(this,5500000)"><span class="choice-tag">GÓI 02</span><strong>Trọn gói cơ bản</strong><small>Thi công theo phạm vi thống nhất; chủng loại vật liệu hoàn thiện ghi rõ trong báo giá chính thức.</small><b class="package-price">5.500.000 đ/m²</b></button>
+          <button type="button" class="calc-choice" data-price="7000000" onclick="selectPkg(this,7000000)"><span class="choice-tag">GÓI 03</span><strong>Trọn gói cao cấp</strong><small>Mức hoàn thiện cao hơn; danh mục, thương hiệu và mã vật liệu được xác nhận trước khi ký.</small><b class="package-price">7.000.000 đ/m²</b></button>
+        </div>
+        <div class="calc-actions"><button class="calc-action secondary" type="button" onclick="calcNextStep(1)"><i class="fas fa-arrow-left"></i> Quay lại</button><button class="calc-action primary" type="button" onclick="calcResult()">Xem bảng dự toán <i class="fas fa-arrow-right"></i></button></div>
+      </section>
+      <section id="calc-step-3" style="display:none;padding:0;border:0;">
+        <div style="display:flex;justify-content:space-between;gap:14px;align-items:start;flex-wrap:wrap;margin-bottom:22px;"><div><span class="calc-eyebrow"><i class="fas fa-file-invoice-dollar"></i> PHIẾU DỰ TOÁN THAM KHẢO</span><h3 id="quote-title" class="calc-panel-title">Dự toán công trình</h3></div><button class="calc-action secondary" type="button" onclick="calcNextStep(2)"><i class="fas fa-pen"></i> Chỉnh thông tin</button></div>
+        <div class="calc-estimate">
+          <div class="calc-estimate-card"><h4>Khối lượng & cách tính</h4><div id="quote-lines"></div><p id="quote-scope" class="calc-disclaimer"></p></div>
+          <div class="calc-estimate-card"><h4>Tổng hợp chi phí</h4><div class="calc-line"><span>Thành tiền trước VAT</span><strong id="quote-subtotal"></strong></div><div class="calc-line"><span>VAT 8% (tạm tính)</span><strong id="quote-vat"></strong></div><div class="calc-total"><span>TỔNG DỰ KIẾN</span><strong id="finalPrice"></strong></div><div style="margin-top:18px;padding:14px;border-radius:8px;background:rgba(143,188,149,.1);"><div class="calc-eyebrow" style="margin:0 0 6px;"><i class="fas fa-shield-alt"></i> KHOẢN DỰ PHÒNG KHUYẾN NGHỊ</div><strong id="quote-reserve" style="color:#d9eadb;"></strong><small style="display:block;color:#9da89e;margin-top:5px;">Dự phòng 5–10% cho điều kiện hiện trạng và thay đổi phạm vi.</small></div></div>
+        </div>
+        <div class="calc-estimate-card" style="margin-top:14px;display:flex;gap:12px;align-items:flex-start;"><i class="fas fa-clock" style="color:#a8d2ad;margin-top:3px;"></i><div><strong>Lộ trình tham khảo</strong><p id="quote-timeline" class="calc-disclaimer" style="margin:4px 0 0;"></p></div></div>
+        <div class="calc-disclaimer" style="margin-top:18px;padding:16px;border:1px solid #464037;border-radius:9px;background:rgba(190,145,75,.06);"><strong style="color:#e7c68c;">Phạm vi và điều kiện cần xác nhận</strong><ul style="padding-left:18px;margin-top:8px;"><li>Đơn giá tính trên khối lượng quy đổi trong phiếu; khảo sát thực tế có thể làm thay đổi khối lượng.</li><li>Chưa bao gồm nội thất rời, phí xin phép, khảo sát địa chất, xử lý nền/móng đặc biệt và các hạng mục không ghi trong phạm vi gói.</li><li>Vật liệu, thương hiệu, quy cách, tiến độ thanh toán và bảo hành phải được ghi thành phụ lục báo giá/hợp đồng trước khi thi công.</li><li>VAT 8% đang là mức tạm tính trong công cụ; áp dụng theo quy định thuế và loại dịch vụ tại thời điểm xuất hóa đơn.</li></ul></div>
+        <div class="calc-cta-row"><button class="calc-cta primary" type="button" onclick="sendQuoteRequest()"><i class="fas fa-phone"></i> Gửi yêu cầu tư vấn</button><button class="calc-cta" type="button" onclick="copyQuote()"><i class="fas fa-copy"></i> Sao chép phiếu</button><button class="calc-cta" type="button" onclick="window.print()"><i class="fas fa-print"></i> In / lưu PDF</button><button class="calc-cta" type="button" onclick="calcNextStep(1)"><i class="fas fa-redo"></i> Tính lại</button></div>
+      </section>
+      <p class="calc-disclaimer" style="border-top:1px solid #303731;padding-top:18px;margin-top:24px;">Đây là dự toán sơ bộ để tham khảo, chưa phải báo giá hay cam kết hợp đồng. Để hạn chế hiểu nhầm, khối lượng, vật liệu, hạng mục bao gồm/loại trừ và điều kiện phát sinh cần được ghi cụ thể trong báo giá chính thức.</p>
     </div>
   </div>
 </div>
@@ -654,67 +725,120 @@
   }
   let currentMode = 'design';
   let selectedPrice = 79000;
-
+  let selectedPackageName = 'Thiết kế tiết kiệm';
+  let quoteLastText = '';
+  const moneyVnd = value => new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND',maximumFractionDigits:0}).format(Math.round(value||0));
+  const quotePackages = {
+    design:[['Thiết kế tiết kiệm',79000],['Thiết kế cơ bản',119000],['Thiết kế hoàn thiện',179000]],
+    build:[['Thi công phần thô',3500000],['Trọn gói cơ bản',5500000],['Trọn gói cao cấp',7000000]]
+  };
+  function updateFinishChoices() {
+    const mode = document.getElementById('buildModeInput')?.value;
+    const choices = document.querySelectorAll('#buildPkgs .calc-choice');
+    if (!choices.length) return;
+    if (mode === 'rough') {
+      choices[0].hidden=false; choices[1].hidden=true; choices[2].hidden=true;
+      selectPkg(choices[0],3500000);
+    } else {
+      choices[0].hidden=true; choices[1].hidden=false; choices[2].hidden=false;
+      selectPkg(choices[1],5500000);
+    }
+  }
   window.switchMode = function(mode) {
-    currentMode = mode;
-    document.getElementById('btn-design').style.background = mode === 'design' ? 'var(--accent)' : 'transparent';
-    document.getElementById('btn-design').style.color = mode === 'design' ? '#000' : 'var(--muted)';
-    document.getElementById('btn-build').style.background = mode === 'build' ? 'var(--accent)' : 'transparent';
-    document.getElementById('btn-build').style.color = mode === 'build' ? '#000' : 'var(--muted)';
-    document.getElementById('floorsGroup').style.display = mode === 'build' ? 'block' : 'none';
-    document.getElementById('designPkgs').style.display = mode === 'design' ? 'grid' : 'none';
-    document.getElementById('buildPkgs').style.display = mode === 'build' ? 'grid' : 'none';
-    selectedPrice = mode === 'design' ? 79000 : 3500000;
-  }
-
+    currentMode = mode === 'build' ? 'build' : 'design';
+    document.getElementById('btn-design').className = currentMode === 'design' ? 'calc-action primary' : 'calc-action secondary';
+    document.getElementById('btn-build').className = currentMode === 'build' ? 'calc-action primary' : 'calc-action secondary';
+    document.getElementById('design-fields').style.display = currentMode === 'design' ? 'grid' : 'none';
+    document.getElementById('build-fields').style.display = currentMode === 'build' ? 'grid' : 'none';
+    document.getElementById('designPkgs').style.display = currentMode === 'design' ? 'grid' : 'none';
+    document.getElementById('buildPkgs').style.display = currentMode === 'build' ? 'grid' : 'none';
+    document.getElementById('quote-step-help').textContent = currentMode === 'design' ? 'Nhập diện tích sàn dự kiến để tính gói thiết kế.' : 'Nhập kích thước, số tầng và điều kiện công trình để bóc tách diện tích quy đổi.';
+    document.getElementById('quote-title').textContent = currentMode === 'design' ? 'Dự toán thiết kế' : 'Dự toán thi công';
+    document.getElementById('calc-step-3').style.display='none'; document.getElementById('calc-step-2').style.display='none'; document.getElementById('calc-step-1').style.display='block';
+    quoteSetStep(1);
+    const first = document.querySelector('#'+(currentMode==='design'?'designPkgs':'buildPkgs')+' .calc-choice:not([hidden])');
+    if (first) selectPkg(first, Number(first.dataset.price));
+    if (currentMode==='build') updateFinishChoices();
+  };
   window.selectPkg = function(el, price) {
-    const parent = el.parentElement;
-    parent.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+    const parent=el.parentElement;
+    parent.querySelectorAll('.calc-choice').forEach(c=>c.classList.remove('selected'));
     el.classList.add('selected');
-    selectedPrice = price;
+    selectedPrice=Number(price)||0;
+    selectedPackageName=el.querySelector('strong')?.textContent||'Gói dịch vụ';
+  };
+  function quoteSetStep(step) {
+    [1,2,3].forEach(n=>{
+      const panel=document.getElementById('calc-step-'+n);
+      if(panel) panel.style.display=n===step?'block':'none';
+      const label=document.getElementById('quote-step-label-'+n);
+      if(label) label.classList.toggle('active',n<=step);
+    });
   }
-
   window.calcNextStep = function(step) {
-    if (step === 2) {
-      const area = Number(document.getElementById('areaInput').value);
-      const floors = Number(document.getElementById('floorsInput').value);
-      if (!Number.isFinite(area) || area < 1 || area > 10000) {
-        alert('Vui lòng nhập diện tích từ 1 đến 10.000 m².');
-        document.getElementById('areaInput').focus();
-        return;
-      }
-      if (currentMode === 'build' && (!Number.isInteger(floors) || floors < 1 || floors > 10)) {
-        alert('Vui lòng nhập số tầng từ 1 đến 10.');
-        document.getElementById('floorsInput').focus();
-        return;
+    if (step===2) {
+      if(currentMode==='design') {
+        const area=Number(document.getElementById('areaInput').value);
+        if(!Number.isFinite(area)||area<30||area>10000){alert('Nhập diện tích thiết kế từ 30 đến 10.000 m².');document.getElementById('areaInput').focus();return;}
+      } else {
+        const width=Number(document.getElementById('widthInput').value),length=Number(document.getElementById('lengthInput').value),floors=Number(document.getElementById('floorsInput').value),balcony=Number(document.getElementById('balconyInput').value);
+        if(!Number.isFinite(width)||width<=0||width>100||!Number.isFinite(length)||length<=0||length>200||!Number.isInteger(floors)||floors<1||floors>10||!Number.isFinite(balcony)||balcony<0||balcony>10){alert('Kiểm tra lại kích thước, số tầng và ban công.');return;}
       }
     }
-    document.getElementById('calc-step-1').style.display = step === 1 ? 'block' : 'none';
-    document.getElementById('calc-step-2').style.display = step === 2 ? 'block' : 'none';
-    document.getElementById('calc-step-3').style.display = step === 3 ? 'block' : 'none';
+    quoteSetStep(step);
+  };
+  function quoteLine(label,value) {
+    const row=document.createElement('div');row.className='calc-line';
+    const l=document.createElement('span');l.textContent=label;
+    const v=document.createElement('strong');v.textContent=value;
+    row.append(l,v);document.getElementById('quote-lines').appendChild(row);
   }
-
   window.calcResult = function() {
-    const area = Number(document.getElementById('areaInput').value);
-    const floors = currentMode === 'build' ? Number(document.getElementById('floorsInput').value) : 1;
-    if (!Number.isFinite(area) || area < 1 || area > 10000 || !Number.isFinite(floors) || floors < 1 || floors > 10) {
-      alert('Vui lòng kiểm tra lại diện tích và số tầng.');
-      calcNextStep(1);
-      return;
+    let subtotal=0, lines=[];
+    if(currentMode==='design') {
+      const area=Number(document.getElementById('areaInput').value);
+      if(!Number.isFinite(area)||area<30||area>10000){calcNextStep(2);return;}
+      subtotal=Math.round(area*selectedPrice);
+      lines=[['Diện tích thiết kế',area.toLocaleString('vi-VN')+' m²'],['Gói được chọn',selectedPackageName],['Đơn giá',moneyVnd(selectedPrice)+' / m²'],['Cách tính',area.toLocaleString('vi-VN')+' m² × '+moneyVnd(selectedPrice)]];
+      document.getElementById('quote-scope').textContent='Phạm vi thiết kế căn cứ mô tả gói đã chọn. Bản vẽ, số lần chỉnh sửa, hồ sơ bàn giao và các phần việc bổ sung sẽ được liệt kê cụ thể trong đề xuất chính thức.';
+      document.getElementById('quote-timeline').textContent='Thời gian dự kiến được xác nhận sau khi thống nhất nhu cầu, hồ sơ đầu vào và lịch triển khai.';
+    } else {
+      const width=Number(document.getElementById('widthInput').value),length=Number(document.getElementById('lengthInput').value),floors=Number(document.getElementById('floorsInput').value),balcony=Number(document.getElementById('balconyInput').value);
+      if(!Number.isFinite(width)||width<=0||!Number.isFinite(length)||length<=0||!Number.isInteger(floors)||floors<1||floors>10){calcNextStep(1);return;}
+      const land=width*length, balconyFloor=width*balcony, floorPerLevel=land+balconyFloor, slab=floorPerLevel*floors;
+      const foundationRate=document.getElementById('foundationInput').value==='bang'?0.30:0.15;
+      const foundation=land*foundationRate, quoteArea=slab+foundation;
+      const road=document.getElementById('roadInput').value==='hem'?1.15:1;
+      const tin=document.getElementById('roofInput').value==='tin';
+      const roofAdjustment=tin?500000*floorPerLevel:0;
+      subtotal=Math.max(0,Math.round(quoteArea*selectedPrice*road-roofAdjustment));
+      lines=[['Kích thước khu đất',width+' m × '+length+' m'],['Diện tích đất',land.toFixed(2)+' m²'],['Diện tích sàn quy đổi',floorPerLevel.toFixed(2)+' m²/tầng × '+floors+' tầng = '+slab.toFixed(2)+' m²'],['Móng quy đổi',land.toFixed(2)+' m² × '+Math.round(foundationRate*100)+'% = '+foundation.toFixed(2)+' m²'],['Tổng diện tích tính giá',quoteArea.toFixed(2)+' m²'],['Gói & đơn giá',selectedPackageName+' · '+moneyVnd(selectedPrice)+'/m²'],['Điều chỉnh hẻm nhỏ',road===1.15?'+15% theo đơn giá':'Không áp dụng'],['Điều chỉnh mái tôn',tin?'− '+moneyVnd(500000)+' × '+floorPerLevel.toFixed(2)+' m²':'Không áp dụng']];
+      document.getElementById('quote-scope').textContent='Phép tính dùng diện tích đất × số tầng, cộng hệ số móng '+Math.round(foundationRate*100)+'%'+(balcony>0?' và ban công '+balcony.toFixed(2)+' m theo chiều ngang':'')+'. Hệ số nền móng, mái và đường chỉ là giả định sơ bộ; kết cấu thực tế cần kỹ sư khảo sát xác nhận.';
+      document.getElementById('quote-timeline').textContent='Tiến độ phụ thuộc quy mô, hồ sơ thiết kế, điều kiện nền đất và phạm vi hoàn thiện; lịch cụ thể sẽ được ghi trong báo giá/hợp đồng.';
     }
-    let totalArea = area;
-    if (currentMode === 'build') {
-      totalArea = (area * floors) + (area * 0.3) + (area * 0.5);
-    }
-    const subTotal = totalArea * selectedPrice;
-    const vat = subTotal * 0.08;
-    const finalTotal = subTotal + vat;
-    const formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
-    document.getElementById('finalPrice').innerText = formatter.format(finalTotal);
-    calcNextStep(3);
-  }
-
-  const loginForm = document.getElementById('admin-login-form');
+    const vat=Math.round(subtotal*0.08),total=subtotal+vat;
+    const box=document.getElementById('quote-lines');box.replaceChildren();lines.forEach(([label,value])=>quoteLine(label,value));
+    document.getElementById('quote-subtotal').textContent=moneyVnd(subtotal);
+    document.getElementById('quote-vat').textContent=moneyVnd(vat);
+    document.getElementById('finalPrice').textContent=moneyVnd(total);
+    document.getElementById('quote-reserve').textContent=moneyVnd(Math.round(total*.05))+' – '+moneyVnd(Math.round(total*.1));
+    document.getElementById('quote-title').textContent=(currentMode==='design'?'Thiết kế · ':'Thi công · ')+selectedPackageName;
+    quoteLastText=['XÂY DỰNG GIA LAI — DỰ TOÁN SƠ BỘ',document.getElementById('quote-title').textContent,...lines.map(x=>x[0]+': '+x[1]),'Trước VAT: '+moneyVnd(subtotal),'VAT 8% tạm tính: '+moneyVnd(vat),'Tổng dự kiến: '+moneyVnd(total),document.getElementById('quote-scope').textContent].join('\n');
+    quoteSetStep(3);
+  };
+  window.copyQuote = async function() {
+    try { await navigator.clipboard.writeText(quoteLastText); alert('Đã sao chép phiếu dự toán.'); }
+    catch { prompt('Sao chép nội dung phiếu dự toán:',quoteLastText); }
+  };
+  window.sendQuoteRequest = function() {
+    const message=document.getElementById('cmessage'), name=document.getElementById('cname');
+    if(message) message.value='Tôi muốn được tư vấn báo giá.\n'+quoteLastText;
+    if(name) name.focus();
+    window.showPage('home');
+    setTimeout(()=>document.getElementById('lien-he')?.scrollIntoView({behavior:'smooth'}),80);
+    setTimeout(()=>message?.focus(),450);
+  };
+    const loginForm = document.getElementById('admin-login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', (event) => {
       event.preventDefault();
