@@ -40,17 +40,12 @@
   .delay-1 { transition-delay: 0.1s; }
   .delay-2 { transition-delay: 0.2s; }
 
-  /* HEADER & KHỬ NỀN TRẮNG CỦA LOGO HOÀN TOÀN */
+  /* HEADER & LOGO VECTOR CHUẨN TUYỆT ĐỐI */
   header{ position:fixed; top:0; left:0; width:100%; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:12px 40px; background:rgba(18,18,18,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); transition:all 0.3s; }
-  .brand-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+  .brand-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
   
-  .brand-logo img { 
-    height: 40px; 
-    width: auto; 
-    object-fit: contain; 
-    mix-blend-mode: multiply; /* Tự động biến toàn bộ nền trắng thành trong suốt */
-    filter: invert(1) grayscale(100%) brightness(2); /* Đảo màu chữ thành sáng nổi bật trên nền đen */
-  }
+  /* TÙY CHỈNH SVG LOGO NÉT CĂNG */
+  .brand-logo svg { height: 42px; width: auto; display: block; }
   
   .nav-links { display: flex; gap: 35px; align-items: center; }
   .nav-links a { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); transition: color 0.3s; font-weight: 500;}
@@ -230,9 +225,35 @@
 <body>
 
 <header>
-  <div class="brand-logo" onclick="showPage('home')">
-    <img src="Building Company Logo_2.png" alt="HUY HOÀNG">
-  </div>
+  <a class="brand-logo" href="#" onclick="showPage('home')">
+    <!-- LOGO CHUẨN VECTOR SẮC NÉT KHÔNG BAO GIỜ BỊ VỠ HẠT HAY LỖI VIỀN TRẮNG -->
+    <svg viewBox="0 0 680 140" xmlns="http://www.w3.org/2000/svg">
+      <!-- CHỮ HUY HOÀNG (MÀU XANH THƯƠNG HIỆU) -->
+      <g fill="#2172b8">
+        <!-- H -->
+        <path d="M12 25h20v25h32V25h20v78H64V76H32v27H12V25z"/>
+        <!-- U -->
+        <path d="M98 25h20v54c0 10 6 15 17 15s17-5 17-15V25h20v54c0 20-13 31-37 31s-37-11-37-31V25z"/>
+        <!-- Y -->
+        <path d="M190 25h20l20 33 20-33h20l-31 49v30h-20V74l-31-49z"/>
+        
+        <!-- HOÀNG -->
+        <!-- H -->
+        <path d="M312 25h20v25h32V25h20v78h-20V76h-32v27h-20V25z"/>
+        <!-- O -->
+        <path d="M398 64c0-23 13-41 37-41s37 18 37 41-13 41-37 41-37-18-37-41zm54 0c0-13-7-23-17-23s-17 10-17 23 7 23 17 23 17-10 17-23z"/>
+        <!-- Á -->
+        <path d="M488 25h22l28 78h-21l-7-21h-31l-7 21h-21l28-78zm13 18l-11 34h22l-11-34z"/>
+        <!-- N -->
+        <path d="M552 25h19l32 53V25h19v78h-18l-33-55v55h-19V25z"/>
+        <!-- G -->
+        <path d="M642 43c-6-12-16-19-30-19-21 0-35 15-35 40s14 40 35 40c13 0 23-6 29-17l-15-10c-3 5-8 9-14 9-10 0-16-8-16-22h46V61c0-2-.02-4-.06-6h.06v-12z"/>
+      </g>
+
+      <!-- SLOGAN: XÂY DỰNG TƯƠNG LAI -->
+      <text x="14" y="128" fill="#7baad4" font-family="'Montserrat', sans-serif" font-size="18.5" font-weight="600" letter-spacing="6">XÂY DỰNG TƯƠNG LAI</text>
+    </svg>
+  </a>
   <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
   <div class="nav-links" id="navLinks">
     <a href="#" onclick="showPage('home')">Trang chủ</a>
