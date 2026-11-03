@@ -40,16 +40,16 @@
   .delay-1 { transition-delay: 0.1s; }
   .delay-2 { transition-delay: 0.2s; }
 
-  /* HEADER & LOGO CHÍNH HÃNG HUY HOÀNG */
+  /* HEADER & KHỬ NỀN TRẮNG CỦA LOGO HOÀN TOÀN */
   header{ position:fixed; top:0; left:0; width:100%; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:12px 40px; background:rgba(18,18,18,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); transition:all 0.3s; }
   .brand-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
   
   .brand-logo img { 
-    height: 42px; 
+    height: 40px; 
     width: auto; 
     object-fit: contain; 
-    mix-blend-mode: screen; 
-    filter: brightness(1.2) contrast(1.2); 
+    mix-blend-mode: multiply; /* Tự động biến toàn bộ nền trắng thành trong suốt */
+    filter: invert(1) grayscale(100%) brightness(2); /* Đảo màu chữ thành sáng nổi bật trên nền đen */
   }
   
   .nav-links { display: flex; gap: 35px; align-items: center; }
@@ -231,7 +231,7 @@
 
 <header>
   <div class="brand-logo" onclick="showPage('home')">
-    <img src="logo-huyhoang.png" alt="HUY HOÀNG - XÂY DỰNG TƯƠNG LAI">
+    <img src="Building Company Logo_2.png" alt="HUY HOÀNG">
   </div>
   <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
   <div class="nav-links" id="navLinks">
