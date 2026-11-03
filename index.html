@@ -672,14 +672,18 @@
     document.getElementById('admin-screen').style.display = 'none';
   }
 
-  // HÀM TỐI ƯU NÉN ẢNH SIÊU NHẸ ĐỂ TRÁNH LỖI TIMEOUT
-  function compressImage(file, maxWidth = 1200, quality = 0.7) {
-    return new Promise((resolve) => {
+  function compressImage(file, maxWidth = 1600, quality = 0.8) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.type.startsWith('image/')) {
+        reject(new Error('Tệp đã chọn không phải ảnh hợp lệ.'));
+        return;
+      }
+
       const reader = new FileReader();
-      reader.readAsDataURL(file);
+      reader.onerror = () => reject(new Error('Không đọc được tệp ảnh. Hãy thử chọn lại ảnh.'));
       reader.onload = (event) => {
         const img = new Image();
-        img.src = event.target.result;
+        img.onerror = () => reject(new Error('Trình duyệt không giải mã được ảnh này. Hãy thử JPG hoặc PNG.'));
         img.onload = () => {
           let width = img.width;
           let height = img.height;
@@ -687,17 +691,44 @@
             height = Math.round((height * maxWidth) / width);
             width = maxWidth;
           }
+
           const canvas = document.createElement('canvas');
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Trình duyệt không hỗ trợ xử lý ảnh.'));
+            return;
+          }
           ctx.drawImage(img, 0, 0, width, height);
           canvas.toBlob((blob) => {
-            resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: 'image/jpeg', lastModified: Date.now() }));
+            if (!blob) {
+              reject(new Error('Không thể tối ưu ảnh. Hãy thử ảnh khác.'));
+              return;
+            }
+            const safeName = file.name.replace(/\\.[^/.]+$/, '') || 'cong-trinh';
+            resolve(new File([blob], safeName + '.jpg', { type: 'image/jpeg', lastModified: Date.now() }));
           }, 'image/jpeg', quality);
         };
+        img.src = event.target.result;
       };
+      reader.readAsDataURL(file);
     });
+  }
+
+  function explainUploadError(error) {
+    const code = error && error.code ? error.code : '';
+    if (code === 'storage/unauthorized' || code === 'storage/ unauthenticated') {
+      return 'Firebase Storage đang từ chối tải lên. Cần kiểm tra quy tắc quyền Storage trong Firebase Console.';
+    }
+    if (code === 'storage/retry-limit-exceeded') {
+      return 'Kết nối bị gián đoạn hoặc tải lên quá lâu. Hãy thử lại với ảnh nhỏ hơn hoặc mạng ổn định hơn.';
+    }
+    if (code === 'storage/bucket-not-found' || code === 'storage/no-default-bucket') {
+      return 'Không tìm thấy Firebase Storage bucket. Hãy kiểm tra cấu hình storageBucket trong Firebase.';
+    }
+    if (code === 'storage/canceled') return 'Tác vụ tải ảnh đã bị hủy.';
+    return (error && error.message) || 'Đã xảy ra lỗi không xác định.';
   }
 
   const addPrjForm = document.getElementById('addPrjForm');
@@ -705,42 +736,54 @@
     addPrjForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('btnAddPrj');
-      const files = document.getElementById('prjImg').files;
-      if (files.length === 0) return alert("Vui lòng chọn ít nhất 1 ảnh!");
+      const files = Array.from(document.getElementById('prjImg').files || []);
+      if (files.length === 0) return alert('Vui lòng chọn ít nhất 1 ảnh!');
 
       btn.disabled = true;
-      const title = document.getElementById('prjTitle').value;
-      const desc = document.getElementById('prjDesc').value;
+      const title = document.getElementById('prjTitle').value.trim();
+      const desc = document.getElementById('prjDesc').value.trim();
       const type = document.getElementById('prjType').value;
+      let uploaded = 0;
 
       try {
         for (let i = 0; i < files.length; i++) {
-          btn.innerText = `Đang nén ảnh (${i + 1}/${files.length})...`;
+          btn.innerText = `Đang xử lý ảnh (${i + 1}/${files.length})...`;
           const compressedFile = await compressImage(files[i]);
-          
-          btn.innerText = `Đang tải lên ảnh (${i + 1}/${files.length})...`;
-          const storageRef = ref(storage, 'projects/' + Date.now() + '_' + i + '_' + compressedFile.name);
-          await uploadBytes(storageRef, compressedFile);
-          const downloadURL = await getDownloadURL(storageRef);
 
-          await addDoc(collection(db, "projects"), {
+          btn.innerText = `Đang tải ảnh lên (${i + 1}/${files.length})...`;
+          const storageRef = ref(storage, 'projects/' + Date.now() + '_' + i + '_' + compressedFile.name);
+          const uploadResult = await uploadBytes(storageRef, compressedFile, { contentType: 'image/jpeg' });
+          const downloadURL = await getDownloadURL(uploadResult.ref);
+
+          await addDoc(collection(db, 'projects'), {
             title: title + (files.length > 1 ? ` (${i + 1})` : ''),
             description: desc,
             type: type,
             imageUrl: downloadURL,
             timestamp: new Date()
           });
+          uploaded++;
         }
-        alert(`Đã đăng thành công toàn bộ ${files.length} ảnh!`);
+
+        alert(`Đã đăng thành công ${uploaded} ảnh!`);
         addPrjForm.reset();
-        loadAdminData();
-        loadProjectsOnHome();
+        await loadAdminData();
+        await loadProjectsOnHome();
       } catch (error) {
-        console.error(error); 
-        alert("Lỗi tải ảnh: " + error.message);
+        console.error('Lỗi tải ảnh công trình:', error);
+        const detail = explainUploadError(error);
+        alert(uploaded
+          ? `Đã đăng ${uploaded}/${files.length} ảnh. Lỗi ở ảnh tiếp theo: ${detail}`
+          : `Không tải được ảnh: ${detail}`);
+        if (uploaded) {
+          addPrjForm.reset();
+          loadAdminData();
+          loadProjectsOnHome();
+        }
+      } finally {
+        btn.innerText = 'Tải Lên Dự Án';
+        btn.disabled = false;
       }
-      btn.innerText = "Tải Lên Dự Án"; 
-      btn.disabled = false;
     });
   }
 
