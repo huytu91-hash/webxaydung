@@ -531,7 +531,7 @@
 <div id="page-pricing" class="page" style="padding-top:130px;min-height:100vh;">
   <div class="wrap" style="max-width:1040px;">
     <div class="sec-head" style="text-align:center;max-width:100%;">
-      <span class="num">DỰ TOÁN MINH BẠCH · XÂY DỰNG GIA LAI</span>
+      <span class="num">DỰ TOÁN MINH BẠCH · HUY HOÀNG</span>
       <h2>Tính chi phí công trình<br><span>rõ từng hạng mục.</span></h2>
       <p style="max-width:650px;margin:14px auto 0;color:var(--muted);">Chọn dịch vụ và nhập quy mô dự kiến. Bảng kết quả sẽ ghi rõ cách tính, đơn giá, VAT, phạm vi và các điều kiện cần xác nhận trước khi ký.</p>
     </div>
@@ -823,7 +823,7 @@
     document.getElementById('finalPrice').textContent=moneyVnd(total);
     document.getElementById('quote-reserve').textContent=moneyVnd(Math.round(total*.05))+' – '+moneyVnd(Math.round(total*.1));
     document.getElementById('quote-title').textContent=(currentMode==='design'?'Thiết kế · ':'Thi công · ')+selectedPackageName;
-    quoteLastText=['XÂY DỰNG GIA LAI — DỰ TOÁN SƠ BỘ',document.getElementById('quote-title').textContent,...lines.map(x=>x[0]+': '+x[1]),'Trước VAT: '+moneyVnd(subtotal),'VAT 8% tạm tính: '+moneyVnd(vat),'Tổng dự kiến: '+moneyVnd(total),document.getElementById('quote-scope').textContent].join('\n');
+    quoteLastText=['HUY HOÀNG — DỰ TOÁN SƠ BỘ',document.getElementById('quote-title').textContent,...lines.map(x=>x[0]+': '+x[1]),'Trước VAT: '+moneyVnd(subtotal),'VAT 8% tạm tính: '+moneyVnd(vat),'Tổng dự kiến: '+moneyVnd(total),document.getElementById('quote-scope').textContent].join('\n');
     quoteSetStep(3);
   };
   window.copyQuote = async function() {
