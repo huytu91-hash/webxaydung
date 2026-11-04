@@ -744,6 +744,7 @@
       selectPkg(choices[1],5500000);
     }
   }
+  window.updateFinishChoices = updateFinishChoices;
   window.switchMode = function(mode) {
     currentMode = mode === 'build' ? 'build' : 'design';
     document.getElementById('btn-design').className = currentMode === 'design' ? 'calc-action primary' : 'calc-action secondary';
