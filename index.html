@@ -266,6 +266,51 @@
     #page-pricing .calc-estimate { grid-template-columns:1.2fr .8fr !important; }
     #page-pricing .calc-container > .calc-disclaimer:last-child { color:#444 !important; }
   }
+
+  /* Refined motion system: subtle depth, crisp transitions, and accessible fallbacks. */
+  :root { --motion-fast: 220ms; --motion-base: 420ms; --ease-premium: cubic-bezier(.2,.75,.25,1); }
+  html { scroll-padding-top: 86px; }
+  header { transition: background-color var(--motion-base) var(--ease-premium), padding var(--motion-base) var(--ease-premium), box-shadow var(--motion-base) var(--ease-premium); }
+  header.is-scrolled { padding-top: 8px; padding-bottom: 8px; background: rgba(14,15,14,.96); box-shadow: 0 12px 38px rgba(0,0,0,.24); }
+  .nav-links a { position:relative; padding:10px 0; }
+  .nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:3px; height:1px; background:var(--accent); transition:right var(--motion-base) var(--ease-premium); }
+  .nav-links a:hover::after, .nav-links a:focus-visible::after { right:0; }
+  .btn-primary, .calc-action, .calc-cta, .submit-btn, .mobile-menu-btn { transition: transform var(--motion-fast) var(--ease-premium), box-shadow var(--motion-base) var(--ease-premium), background-color var(--motion-fast) ease, border-color var(--motion-fast) ease, color var(--motion-fast) ease; }
+  .btn-primary:hover, .calc-action.primary:hover, .calc-cta.primary:hover, .submit-btn:hover { transform:translateY(-2px); box-shadow:0 12px 30px rgba(201,162,39,.22); }
+  .value-item, .testi-item, .blog-card, .project-item { transition: transform var(--motion-base) var(--ease-premium), border-color var(--motion-base) ease, box-shadow var(--motion-base) var(--ease-premium); }
+  .value-item:hover, .testi-item:hover, .blog-card:hover { box-shadow:0 20px 48px rgba(0,0,0,.24); }
+  .project-item { transform:translateZ(0); }
+  .project-item img { transition:transform 900ms var(--ease-premium), filter 600ms ease; }
+  .project-item::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(135deg,rgba(201,162,39,.13),transparent 44%); opacity:0; transition:opacity var(--motion-base) ease; }
+  .project-item:hover::after, .project-item:focus-visible::after { opacity:1; }
+  .project-item:hover img, .project-item:focus-visible img { transform:scale(1.045); filter:saturate(1.06); }
+  .project-photo-count { backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,.12); }
+  .project-gallery { opacity:0; visibility:hidden; transition:opacity var(--motion-base) ease, visibility var(--motion-base) ease; }
+  .project-gallery:not([hidden]) { opacity:1; visibility:visible; }
+  .project-gallery-panel { transform:translateY(16px) scale(.985); transition:transform 480ms var(--ease-premium); }
+  .project-gallery:not([hidden]) .project-gallery-panel { transform:translateY(0) scale(1); }
+  .project-gallery-image-wrap > img { animation:gallery-image-in 420ms var(--ease-premium) both; }
+  @keyframes gallery-image-in { from { opacity:.35; transform:scale(.985); } to { opacity:1; transform:scale(1); } }
+  .contact-group a { transition:transform var(--motion-base) var(--ease-premium), box-shadow var(--motion-base) ease, filter var(--motion-fast) ease; }
+  .contact-group a:hover { transform:translateY(-4px) scale(1.045); box-shadow:0 14px 32px rgba(0,0,0,.36); filter:brightness(1.08); }
+  .page { display:none; }
+  .page.active { display:block; animation:page-enter 520ms var(--ease-premium) both; }
+  @keyframes page-enter { from { opacity:.55; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .reveal { opacity:1; transform:none; }
+  .reveal.motion-ready { opacity:0; transform:translateY(24px); transition:opacity 760ms var(--ease-premium), transform 760ms var(--ease-premium); }
+  .reveal.motion-ready.active { opacity:1; transform:translateY(0); }
+  @media (hover:none) {
+    .value-item:hover, .testi-item:hover, .blog-card:hover { transform:none; }
+    .project-item:hover img { transform:none; }
+  }
+  @media (max-width:700px) {
+    header.is-scrolled { padding-top:7px; padding-bottom:7px; }
+    .page.active { animation-duration:360ms; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+    .reveal, .reveal.motion-ready { opacity:1 !important; transform:none !important; }
+  }
 </style>
 </head>
 <body>
@@ -1232,6 +1277,27 @@
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+
+
+  // Premium motion that stays calm on mobile and respects reduced-motion preferences.
+  (function initPremiumMotion() {
+    const header = document.querySelector('header');
+    const updateHeader = () => header && header.classList.toggle('is-scrolled', window.scrollY > 24);
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const revealItems = document.querySelectorAll('.reveal');
+    revealItems.forEach((item) => item.classList.add('motion-ready'));
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+    revealItems.forEach((item) => revealObserver.observe(item));
+  })();
 
 <!-- CHATBOT AI -->
 <script type="text/javascript">
