@@ -296,9 +296,6 @@
   .page { display:none; }
   .page.active { display:block; animation:page-enter 520ms var(--ease-premium) both; }
   @keyframes page-enter { from { opacity:.55; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-  .reveal { opacity:1; transform:none; }
-  .reveal.motion-ready { opacity:0; transform:translateY(24px); transition:opacity 760ms var(--ease-premium), transform 760ms var(--ease-premium); }
-  .reveal.motion-ready.active { opacity:1; transform:translateY(0); }
   @media (hover:none) {
     .value-item:hover, .testi-item:hover, .blog-card:hover { transform:none; }
     .project-item:hover img { transform:none; }
@@ -309,7 +306,6 @@
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
-    .reveal, .reveal.motion-ready { opacity:1 !important; transform:none !important; }
   }
 </style>
 </head>
@@ -1279,28 +1275,7 @@
 </script>
 
 
-<script>
-  // Premium motion that stays calm on mobile and respects reduced-motion preferences.
-  (function initPremiumMotion() {
-    const header = document.querySelector('header');
-    const updateHeader = () => header && header.classList.toggle('is-scrolled', window.scrollY > 24);
-    updateHeader();
-    window.addEventListener('scroll', updateHeader, { passive: true });
 
-    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const revealItems = document.querySelectorAll('.reveal');
-    revealItems.forEach((item) => item.classList.add('motion-ready'));
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('active');
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
-    revealItems.forEach((item) => revealObserver.observe(item));
-  })();
-
-</script>
 
 <!-- CHATBOT AI -->
 <script type="text/javascript">
